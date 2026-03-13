@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import NavBar, { HeroNavBar } from "./components/NavBar";
 import HomePage from "./pages/HomePage";
 import ListingsPage from "./pages/ListingsPage";
+import PropertyDetailPage from "./pages/PropertyDetailPage";
 import BranchesPage from "./pages/BranchesPage";
 import AppraisalsPage from "./pages/AppraisalsPage";
 import AboutPage from "./pages/AboutPage";
@@ -18,6 +19,7 @@ function AppRoutes() {
       </Route>
       {/* All other routes use the plain NavBar */}
       <Route element={<NavBar />}>
+      <Route path="/propiedades/ficha/:slug" element={<PropertyDetailPage />} />
       <Route path="/:section/:status" element={<ListingsPage />} />
       <Route path="/sucursales" element={<BranchesPage />} />
       <Route path="/tasaciones" element={<AppraisalsPage />} />

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { api, API_BASE_URL } from "../lib/api";
 import { listingFilters } from "../data/menu";
@@ -79,6 +80,9 @@ export default function ListingsPage() {
                   {property.coveredM2}m2 cubiertos · {property.rooms} amb ·{" "}
                   {property.bathrooms} banos
                 </p>
+                <Link to={`/propiedades/ficha/${property.slug}`} className="card-link">
+                  Ver detalle
+                </Link>
               </div>
             </article>
           );
