@@ -384,6 +384,60 @@ a {
   gap: 18px;
 }
 
+.why-choose {
+  margin-top: 30px;
+  border-top: 1px solid #2d3950;
+  background:
+    radial-gradient(circle at 8% 18%, rgba(216, 162, 69, 0.1), transparent 24%),
+    radial-gradient(circle at 92% 80%, rgba(216, 162, 69, 0.09), transparent 28%),
+    #121a28;
+  padding: 44px 0 52px;
+}
+
+.why-choose h2 {
+  font-family: "Sora", sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2.1rem);
+  line-height: 1.2;
+  max-width: 700px;
+  margin-bottom: 26px;
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.why-item {
+  border: 1px solid #33415c;
+  background: rgba(18, 27, 42, 0.74);
+  padding: 16px;
+}
+
+.why-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #50607d;
+  display: inline-grid;
+  place-items: center;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.why-item h3 {
+  font-family: "Sora", sans-serif;
+  margin-bottom: 9px;
+  font-size: 1rem;
+}
+
+.why-item p {
+  color: #b8c2d3;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
 .card {
   position: relative;
   min-height: 320px;
@@ -915,6 +969,64 @@ select {
   color: #ff7b7b;
 }
 
+.site-footer {
+  border-top: 1px solid #2f3a51;
+  background:
+    linear-gradient(180deg, #121a28, #0e1623),
+    var(--bg-deep);
+}
+
+.footer-grid {
+  padding: 34px 0 26px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 20px;
+}
+
+.footer-brand {
+  font-family: "Sora", sans-serif;
+  letter-spacing: 0.4px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-title {
+  color: #dce3ee;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-text {
+  color: #a8b3c6;
+  line-height: 1.55;
+  font-size: 0.92rem;
+}
+
+.footer-links {
+  display: grid;
+  gap: 8px;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: #b8c2d5;
+  font-size: 0.92rem;
+}
+
+.footer-links a:hover {
+  color: #f0f3f8;
+}
+
+.footer-bottom {
+  border-top: 1px solid #263148;
+  padding: 14px 0;
+}
+
+.footer-bottom p {
+  color: #8f9bb0;
+  font-size: 0.84rem;
+}
+
 @media (max-width: 1024px) {
   .about {
     grid-template-columns: 1fr;
@@ -927,8 +1039,13 @@ select {
   }
 
   .collections,
+  .why-grid,
   .listing-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
   }
 
   .split-section {
@@ -958,9 +1075,14 @@ select {
   .listing-grid,
   .info-grid,
   .metrics-grid,
+  .why-grid,
   .form-grid,
   .inline-fields,
   .image-preview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-grid {
     grid-template-columns: 1fr;
   }
 

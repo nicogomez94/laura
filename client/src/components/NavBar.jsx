@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { menuStructure } from "../data/menu";
+import Footer from "./Footer";
 
 function MobileMenu({ onClose }) {
   return (
@@ -73,11 +74,14 @@ function NavContent({ mobileOpen, setMobileOpen }) {
 export function HeroNavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   return (
-    <div className="hero">
-      <div className="hero-overlay" />
-      <NavContent mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
-      <Outlet />
-    </div>
+    <>
+      <div className="hero">
+        <div className="hero-overlay" />
+        <NavContent mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
+        <Outlet />
+      </div>
+      <Footer />
+    </>
   );
 }
 
@@ -90,6 +94,7 @@ export default function NavBar() {
         <NavContent mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
       </header>
       <Outlet />
+      <Footer />
     </>
   );
 }

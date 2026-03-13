@@ -2,6 +2,24 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const TABS = ["Comprar", "Alquilar", "Tasación"];
+const PILLARS = [
+  {
+    title: "Servicio Integral",
+    text: "Acompanamiento completo desde la publicacion hasta el cierre de la operacion."
+  },
+  {
+    title: "Valor Real",
+    text: "Analisis de mercado y pricing estrategico para vender o alquilar sin sobreexponer."
+  },
+  {
+    title: "Red de Clientes",
+    text: "Base activa de compradores e inversores para reducir tiempos de comercializacion."
+  },
+  {
+    title: "Confianza",
+    text: "Gestion documental, comunicacion transparente y seguimiento profesional en cada etapa."
+  }
+];
 
 function HeroContent() {
   const [activeTab, setActiveTab] = useState(0);
@@ -121,8 +139,24 @@ export default function HomePage() {
             </div>
           </article>
         </section>
+
+        <section className="why-choose">
+          <div className="container">
+            <p className="section-kicker">POR QUE ELEGIRNOS</p>
+            <h2>Trabajamos con un estándar alto de satisfacción para cada cliente</h2>
+
+            <div className="why-grid">
+              {PILLARS.map((pillar, index) => (
+                <article key={pillar.title} className="why-item">
+                  <span className="why-icon">{index + 1}</span>
+                  <h3>{pillar.title}</h3>
+                  <p>{pillar.text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
     </>
   );
 }
-
