@@ -1,5 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import NavBar from "./components/NavBar";
+import NavBar, { HeroNavBar } from "./components/NavBar";
 import HomePage from "./pages/HomePage";
 import ListingsPage from "./pages/ListingsPage";
 import StaticPage from "./pages/StaticPage";
@@ -9,7 +9,12 @@ import AdminDashboardPage from "./pages/AdminDashboardPage";
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      {/* Home uses HeroNavBar so the hero image wraps nav + content */}
+      <Route element={<HeroNavBar />}>
+        <Route path="/" element={<HomePage />} />
+      </Route>
+      {/* All other routes use the plain NavBar */}
+      <Route element={<NavBar />}>
       <Route path="/:section/:status" element={<ListingsPage />} />
       <Route
         path="/sucursales"
@@ -50,6 +55,7 @@ function AppRoutes() {
       <Route path="/admin/login" element={<AdminLoginPage />} />
       <Route path="/admin/properties" element={<AdminDashboardPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
     </Routes>
   );
 }
@@ -57,7 +63,6 @@ function AppRoutes() {
 function App() {
   return (
     <BrowserRouter>
-      <NavBar />
       <AppRoutes />
     </BrowserRouter>
   );
