@@ -461,6 +461,120 @@ a {
   line-height: 1.6;
 }
 
+.info-page {
+  display: grid;
+  gap: 24px;
+}
+
+.info-hero {
+  max-width: 760px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.info-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  padding: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.info-card h3 {
+  font-family: "Sora", sans-serif;
+  font-size: 1.08rem;
+}
+
+.info-card p {
+  color: var(--text-dim);
+  line-height: 1.45;
+}
+
+.info-card strong {
+  color: var(--text-main);
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.metric-card {
+  background: linear-gradient(160deg, #1f2a3f, #192338);
+  border: 1px solid #33415d;
+  padding: 18px;
+}
+
+.metric-card h3 {
+  font-family: "Sora", sans-serif;
+  color: var(--accent);
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.metric-card p {
+  color: #c2cbda;
+}
+
+.split-section {
+  display: grid;
+  grid-template-columns: minmax(240px, 34%) 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.feature-list {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text-dim);
+  display: grid;
+  gap: 8px;
+  line-height: 1.5;
+}
+
+.form-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.form-card h2 {
+  font-family: "Sora", sans-serif;
+  font-size: 1.2rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.btn-primary {
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #111723;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 12px 20px;
+  cursor: pointer;
+  letter-spacing: 0.6px;
+  width: fit-content;
+}
+
+.success-text {
+  color: #99e1b0;
+  font-size: 0.92rem;
+}
+
 .listing-grid {
   margin-top: 20px;
   display: grid;
@@ -669,9 +783,18 @@ select {
     gap: 22px;
   }
 
+  .info-grid,
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .collections,
   .listing-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .split-section {
+    grid-template-columns: 1fr;
   }
 
   .admin-grid {
@@ -691,6 +814,9 @@ select {
 
   .collections,
   .listing-grid,
+  .info-grid,
+  .metrics-grid,
+  .form-grid,
   .inline-fields,
   .image-preview-grid {
     grid-template-columns: 1fr;

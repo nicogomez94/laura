@@ -45,7 +45,7 @@ function NavContent({ mobileOpen, setMobileOpen }) {
         <ul className="nav-links">
           <li><NavLink to="/">Inicio</NavLink></li>
           <li><NavLink to="/propiedades/en-venta">Propiedades</NavLink></li>
-          <li><NavLink to="/sucursales">Zonas</NavLink></li>
+          {/* <li><NavLink to="/sucursales">Zonas</NavLink></li> */}
           <li><NavLink to="/tasaciones">Servicios</NavLink></li>
           <li><NavLink to="/nosotros">Nosotros</NavLink></li>
           <li><NavLink to="/contacto">Contacto</NavLink></li>

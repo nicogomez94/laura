@@ -2,7 +2,10 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import NavBar, { HeroNavBar } from "./components/NavBar";
 import HomePage from "./pages/HomePage";
 import ListingsPage from "./pages/ListingsPage";
-import StaticPage from "./pages/StaticPage";
+import BranchesPage from "./pages/BranchesPage";
+import AppraisalsPage from "./pages/AppraisalsPage";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 
@@ -16,42 +19,10 @@ function AppRoutes() {
       {/* All other routes use the plain NavBar */}
       <Route element={<NavBar />}>
       <Route path="/:section/:status" element={<ListingsPage />} />
-      <Route
-        path="/sucursales"
-        element={
-          <StaticPage
-            title="Sucursales"
-            text="Sucursal principal: Capital Federal. Atencion personalizada para compra, venta y alquiler."
-          />
-        }
-      />
-      <Route
-        path="/tasaciones"
-        element={
-          <StaticPage
-            title="Tasaciones"
-            text="Solicita una tasacion profesional con analisis comparativo de mercado."
-          />
-        }
-      />
-      <Route
-        path="/nosotros"
-        element={
-          <StaticPage
-            title="Nosotros"
-            text="Equipo especializado en operaciones inmobiliarias con enfoque comercial y legal."
-          />
-        }
-      />
-      <Route
-        path="/contacto"
-        element={
-          <StaticPage
-            title="Contacto"
-            text="Escribinos para coordinar una visita o consulta: +54 11 4582 9912."
-          />
-        }
-      />
+      <Route path="/sucursales" element={<BranchesPage />} />
+      <Route path="/tasaciones" element={<AppraisalsPage />} />
+      <Route path="/nosotros" element={<AboutPage />} />
+      <Route path="/contacto" element={<ContactPage />} />
       <Route path="/admin/login" element={<AdminLoginPage />} />
       <Route path="/admin/properties" element={<AdminDashboardPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
