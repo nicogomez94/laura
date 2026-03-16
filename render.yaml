@@ -15,7 +15,7 @@ services:
         fromService:
           type: web
           name: laura-client
-          envVarKey: RENDER_EXTERNAL_URL
+          property: host
       - key: JWT_SECRET
         generateValue: true
       - key: ADMIN_USERNAME
@@ -27,8 +27,9 @@ services:
       - key: RUN_SEED_ON_DEPLOY
         value: "true"
 
-  - type: static
+  - type: web
     name: laura-client
+    runtime: static
     plan: free
     buildCommand: npm ci && npm run build --workspace client
     staticPublishPath: client/dist
@@ -38,7 +39,7 @@ services:
         fromService:
           type: web
           name: laura-api
-          envVarKey: RENDER_EXTERNAL_URL
+          property: host
       - key: VITE_DEBUG_MODE
         value: "false"
     routes:

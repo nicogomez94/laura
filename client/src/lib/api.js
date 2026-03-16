@@ -1,6 +1,10 @@
 import { getToken, clearSession } from "./auth";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+const rawApiBaseUrl =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+const API_BASE_URL = /^https?:\/\//i.test(rawApiBaseUrl)
+  ? rawApiBaseUrl
+  : `https://${rawApiBaseUrl}`;
 
 function buildQuery(params = {}) {
   const query = new URLSearchParams();
