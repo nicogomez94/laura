@@ -30,7 +30,6 @@ services:
   - type: web
     name: laura-client
     runtime: static
-    plan: free
     buildCommand: npm ci && npm run build --workspace client
     staticPublishPath: client/dist
     pullRequestPreviewsEnabled: false
