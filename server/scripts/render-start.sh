@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+SERVER_DIR="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
+cd "${SERVER_DIR}"
+
 if [[ "${DATABASE_URL:-}" != *"schema=laura"* ]]; then
   echo "ERROR: DATABASE_URL must include schema=laura to protect shared database."
   exit 1
