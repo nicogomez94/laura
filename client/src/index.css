@@ -25,6 +25,60 @@ a {
   color: inherit;
 }
 
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(18px) scale(0.995);
+  filter: saturate(0.92);
+  transition:
+    opacity 460ms ease,
+    transform 520ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 520ms ease;
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: transform, opacity;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: saturate(1);
+}
+
+.hero.reveal-on-scroll {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+.hero.reveal-on-scroll .topbar,
+.hero.reveal-on-scroll .navbar,
+.hero.reveal-on-scroll .hero-content {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 520ms ease,
+    transform 620ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.hero.reveal-on-scroll .hero-overlay {
+  opacity: 0.72;
+  transition: opacity 900ms ease;
+}
+
+.hero.reveal-on-scroll.is-visible .topbar,
+.hero.reveal-on-scroll.is-visible .navbar,
+.hero.reveal-on-scroll.is-visible .hero-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero.reveal-on-scroll.is-visible .hero-content {
+  transition-delay: 120ms;
+}
+
+.hero.reveal-on-scroll.is-visible .hero-overlay {
+  opacity: 1;
+}
+
 .container {
   width: min(1180px, 92%);
   margin: 0 auto;
@@ -1092,5 +1146,19 @@ select {
 
   .detail-specs {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll,
+  .reveal-on-scroll.is-visible,
+  .hero.reveal-on-scroll .topbar,
+  .hero.reveal-on-scroll .navbar,
+  .hero.reveal-on-scroll .hero-content,
+  .hero.reveal-on-scroll .hero-overlay {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
   }
 }

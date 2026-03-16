@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import NavBar, { HeroNavBar } from "./components/NavBar";
+import ScrollRevealManager from "./components/ScrollRevealManager";
 import HomePage from "./pages/HomePage";
 import ListingsPage from "./pages/ListingsPage";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
@@ -36,6 +37,7 @@ function AppRoutes() {
 function App() {
   return (
     <BrowserRouter>
+      <ScrollRevealManager />
       <AppRoutes />
     </BrowserRouter>
   );
