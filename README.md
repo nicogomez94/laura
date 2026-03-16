@@ -63,3 +63,30 @@ npm run dev
 - `PUT /api/admin/properties/:id`
 - `DELETE /api/admin/properties/:id`
 - `POST /api/admin/upload`
+
+## Deploy en Render (Blueprint)
+
+Este repo ya incluye `render.yaml` para crear:
+- `laura-api` (backend Node + Prisma)
+- `laura-client` (frontend static con Vite)
+
+### Primer deploy
+
+1. En Render, crear un Blueprint desde este repo.
+2. El `render.yaml` ya conecta automaticamente:
+   - `CLIENT_ORIGIN` (api) desde `RENDER_EXTERNAL_URL` de `laura-client`
+   - `VITE_API_BASE_URL` (client) desde `RENDER_EXTERNAL_URL` de `laura-api`
+3. Base compartida:
+   - `DATABASE_URL` ya queda apuntando a `bsdc` con `?schema=laura`
+   - asi Prisma migra y escribe solo en el schema `laura`
+   - el start script falla si no detecta `schema=laura` para evitar pisar otros proyectos
+4. Credenciales iniciales admin por blueprint:
+   - Usuario: `admin`
+   - Password: `admin123` (cambiar despues del alta inicial)
+
+### Seed inicial (una sola vez)
+
+- El deploy corre migraciones siempre.
+- El seed se ejecuta solo si `RUN_SEED_ON_DEPLOY=true`.
+- En el primer deploy dejalo en `true`.
+- Despues del primer deploy, cambia `RUN_SEED_ON_DEPLOY=false` en Render y redeploy.
