@@ -15,7 +15,7 @@ services:
         fromService:
           type: web
           name: laura-client
-          property: host
+          property: url
       - key: JWT_SECRET
         generateValue: true
       - key: ADMIN_USERNAME
@@ -38,7 +38,7 @@ services:
         fromService:
           type: web
           name: laura-api
-          property: host
+          property: url
       - key: VITE_DEBUG_MODE
         value: "false"
     routes:
