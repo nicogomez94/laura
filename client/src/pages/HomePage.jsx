@@ -2,22 +2,32 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const TABS = ["Comprar", "Alquilar", "Tasación"];
+const COLLECTIONS = [
+  { title: "Propiedades\nen Countries", to: "/propiedades/en-venta", cardClass: "card-1", icon: "fa-tree-city" },
+  { title: "Departamentos\nen Venta", to: "/propiedades/en-venta", cardClass: "card-2", icon: "fa-building" },
+  { title: "Casas\nResidenciales", to: "/propiedades/en-venta", cardClass: "card-3", icon: "fa-house-chimney" },
+  { title: "Inversiones\nPremium", to: "/propiedades/en-venta", cardClass: "card-4", icon: "fa-chart-line" }
+];
 const PILLARS = [
   {
     title: "Servicio Integral",
-    text: "Acompanamiento completo desde la publicacion hasta el cierre de la operacion."
+    text: "Acompanamiento completo desde la publicacion hasta el cierre de la operacion.",
+    icon: "fa-handshake"
   },
   {
     title: "Valor Real",
-    text: "Analisis de mercado y pricing estrategico para vender o alquilar sin sobreexponer."
+    text: "Analisis de mercado y pricing estrategico para vender o alquilar sin sobreexponer.",
+    icon: "fa-scale-balanced"
   },
   {
     title: "Red de Clientes",
-    text: "Base activa de compradores e inversores para reducir tiempos de comercializacion."
+    text: "Base activa de compradores e inversores para reducir tiempos de comercializacion.",
+    icon: "fa-users"
   },
   {
     title: "Confianza",
-    text: "Gestion documental, comunicacion transparente y seguimiento profesional en cada etapa."
+    text: "Gestion documental, comunicacion transparente y seguimiento profesional en cada etapa.",
+    icon: "fa-shield-halved"
   }
 ];
 
@@ -66,9 +76,7 @@ function HeroContent() {
             ))}
           </div>
           <div className="hero-search-row">
-            <svg width="16" height="16" fill="none" stroke="#8a95a8" strokeWidth="2" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
-              <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
+            <i className="fa-solid fa-magnifying-glass hero-search-icon" aria-hidden="true" />
             <input
               type="text"
               placeholder="Barrio, ciudad o zona..."
@@ -86,7 +94,9 @@ function HeroContent() {
         onClick={handleScrollDown}
         aria-label="Ir a la siguiente sección"
       >
-        <span className="hero-scroll-cue-arrow" aria-hidden="true">↓</span>
+        <span className="hero-scroll-cue-arrow" aria-hidden="true">
+          <i className="fa-solid fa-chevron-down" />
+        </span>
       </button>
     </section>
   );
@@ -125,34 +135,18 @@ export default function HomePage() {
         </section>
 
         <section className="collections container">
-          <article className="card card-1">
-            <div className="card-overlay" />
-            <div className="card-content">
-              <h3>Propiedades<br />en Countries</h3>
-              <Link to="/propiedades/en-venta">VER MÁS</Link>
-            </div>
-          </article>
-          <article className="card card-2">
-            <div className="card-overlay" />
-            <div className="card-content">
-              <h3>Departamentos<br />en Venta</h3>
-              <Link to="/propiedades/en-venta">VER MÁS</Link>
-            </div>
-          </article>
-          <article className="card card-3">
-            <div className="card-overlay" />
-            <div className="card-content">
-              <h3>Casas<br />Residenciales</h3>
-              <Link to="/propiedades/en-venta">VER MÁS</Link>
-            </div>
-          </article>
-          <article className="card card-4">
-            <div className="card-overlay" />
-            <div className="card-content">
-              <h3>Inversiones<br />Premium</h3>
-              <Link to="/propiedades/en-venta">VER MÁS</Link>
-            </div>
-          </article>
+          {COLLECTIONS.map((collection) => (
+            <article key={collection.title} className={`card ${collection.cardClass}`}>
+              <div className="card-overlay" />
+              <div className="card-content">
+                <span className="card-icon" aria-hidden="true">
+                  <i className={`fa-solid ${collection.icon}`} />
+                </span>
+                <h3>{collection.title.split("\n")[0]}<br />{collection.title.split("\n")[1]}</h3>
+                <Link to={collection.to}>VER MAS</Link>
+              </div>
+            </article>
+          ))}
         </section>
 
         <section className="why-choose">
@@ -161,9 +155,11 @@ export default function HomePage() {
             <h2>Trabajamos con un estándar alto de satisfacción para cada cliente</h2>
 
             <div className="why-grid">
-              {PILLARS.map((pillar, index) => (
+              {PILLARS.map((pillar) => (
                 <article key={pillar.title} className="why-item">
-                  <span className="why-icon">{index + 1}</span>
+                  <span className="why-icon" aria-hidden="true">
+                    <i className={`fa-solid ${pillar.icon}`} />
+                  </span>
                   <h3>{pillar.title}</h3>
                   <p>{pillar.text}</p>
                 </article>
