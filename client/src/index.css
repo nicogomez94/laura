@@ -152,15 +152,16 @@ a {
 }
 
 .brand {
-  color: var(--text-main);
   text-decoration: none;
-  font-family: "Sora", sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.3px;
+  display: inline-flex;
+  align-items: center;
 }
 
-.brand span {
-  color: var(--accent);
+.brand-logo {
+  display: block;
+  height: 50px;
+  width: auto;
+  object-fit: contain;
 }
 
 .nav-links {
@@ -319,6 +320,7 @@ a {
 .hero-content {
   padding: 85px 0 120px;
   max-width: 620px;
+  height: 80vh;
 }
 
 .hero-kicker {
