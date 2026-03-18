@@ -91,9 +91,9 @@ a {
 
 .hero {
   position: relative;
-  background-image: url("https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=80");
-  background-size: cover;
-  background-position: center;
+  background-image: url("https://images.adsttc.com/media/images/5d34/e507/284d/d109/5600/0240/large_jpg/_FI.jpg?1563747560");
+  background-size: contain;
+  background-position: top;
 }
 
 .hero-overlay {
@@ -253,7 +253,7 @@ a {
   max-width: 540px;
   border-radius: 8px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgb(65 65 65 / 81%);
   border: 1px solid rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(6px);
 }
@@ -321,6 +321,54 @@ a {
   padding: 85px 0 120px;
   max-width: 620px;
   height: 80vh;
+}
+
+.hero-scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: inline-grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(10, 17, 28, 0.38);
+  color: #e7edf9;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color 200ms ease, background 200ms ease, box-shadow 200ms ease;
+  backdrop-filter: blur(3px);
+  z-index: 3;
+}
+
+.hero-scroll-cue:hover {
+  border-color: rgba(216, 162, 69, 0.85);
+  background: rgba(10, 17, 28, 0.55);
+  box-shadow: 0 0 0 4px rgba(216, 162, 69, 0.14);
+}
+
+.hero-scroll-cue-arrow {
+  width: 32px;
+  height: 32px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(216, 162, 69, 0.2);
+  color: var(--accent);
+  font-size: 18px;
+  line-height: 1;
+  animation: heroArrowBounce 1.2s ease-in-out infinite;
+}
+
+@keyframes heroArrowBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
 }
 
 .hero-kicker {
@@ -1146,6 +1194,12 @@ select {
     padding-top: 70px;
   }
 
+  .hero-scroll-cue {
+    bottom: 14px;
+    width: 42px;
+    height: 42px;
+  }
+
   .detail-specs {
     grid-template-columns: 1fr;
   }
@@ -1162,5 +1216,11 @@ select {
     transform: none;
     filter: none;
     transition: none;
+  }
+
+  .hero-scroll-cue,
+  .hero-scroll-cue-arrow {
+    transition: none;
+    animation: none;
   }
 }

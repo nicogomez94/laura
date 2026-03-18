@@ -32,6 +32,12 @@ function HeroContent() {
     navigate(routes[activeTab]);
   }
 
+  function handleScrollDown() {
+    const nextSection = document.querySelector(".dark-block");
+    if (!nextSection) return;
+    nextSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   return (
     <section className="hero-content container">
       <p className="hero-kicker">+3.500 operaciones de compra, venta y alquiler</p>
@@ -73,6 +79,15 @@ function HeroContent() {
           </div>
         </div>
       </form>
+
+      <button
+        type="button"
+        className="hero-scroll-cue"
+        onClick={handleScrollDown}
+        aria-label="Ir a la siguiente sección"
+      >
+        <span className="hero-scroll-cue-arrow" aria-hidden="true">↓</span>
+      </button>
     </section>
   );
 }

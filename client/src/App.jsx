@@ -10,6 +10,7 @@ import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
+import ServicesPage from "./pages/ServicesPage";
 
 function AppRoutes() {
   return (
@@ -23,6 +24,7 @@ function AppRoutes() {
       <Route path="/propiedades/ficha/:slug" element={<PropertyDetailPage />} />
       <Route path="/:section/:status" element={<ListingsPage />} />
       <Route path="/sucursales" element={<BranchesPage />} />
+      <Route path="/servicios" element={<ServicesPage />} />
       <Route path="/tasaciones" element={<AppraisalsPage />} />
       <Route path="/nosotros" element={<AboutPage />} />
       <Route path="/contacto" element={<ContactPage />} />

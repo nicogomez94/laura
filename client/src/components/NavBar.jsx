@@ -51,7 +51,7 @@ function NavContent({ mobileOpen, setMobileOpen }) {
           <li><NavLink to="/">Inicio</NavLink></li>
           <li><NavLink to="/propiedades/en-venta">Propiedades</NavLink></li>
           {/* <li><NavLink to="/sucursales">Zonas</NavLink></li> */}
-          <li><NavLink to="/tasaciones">Servicios</NavLink></li>
+          <li><NavLink to="/servicios">Servicios</NavLink></li>
           <li><NavLink to="/nosotros">Nosotros</NavLink></li>
           <li><NavLink to="/contacto">Contacto</NavLink></li>
         </ul>
@@ -61,9 +61,10 @@ function NavContent({ mobileOpen, setMobileOpen }) {
         <button
           type="button"
           className="mobile-menu-btn"
+          aria-label="Abrir menú"
           onClick={() => setMobileOpen((v) => !v)}
         >
-          ☰
+          <i className="fa-solid fa-bars" aria-hidden="true" />
         </button>
       </nav>
 
