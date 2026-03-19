@@ -91,7 +91,7 @@ a {
 
 .hero {
   position: relative;
-  background-image: url("https://images.adsttc.com/media/images/5d34/e507/284d/d109/5600/0240/large_jpg/_FI.jpg?1563747560");
+  background-image: url("/fondo.jpg");
   background-size: contain;
   background-position: top;
 }
@@ -235,6 +235,64 @@ a {
   background: #f4f3f0;
   color: #111;
   padding: 14px;
+}
+
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #0d1420;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 32px 28px 48px;
+  overflow-y: auto;
+}
+
+.mobile-overlay-close {
+  align-self: flex-end;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #f5f7fb;
+  font-size: 20px;
+  padding: 8px 14px;
+  cursor: pointer;
+  margin-bottom: 40px;
+}
+
+.mobile-overlay-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.mobile-overlay-link {
+  color: #d4dae5;
+  text-decoration: none;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: color 0.2s;
+}
+
+.mobile-overlay-link:hover,
+.mobile-overlay-link.active {
+  color: var(--accent);
+}
+
+.mobile-overlay-cta {
+  margin-top: 40px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  color: #111723;
+  background: var(--accent);
+  padding: 14px 28px;
+  letter-spacing: 0.5px;
+  align-self: flex-start;
 }
 
 .cta-small {
@@ -438,6 +496,7 @@ a {
   min-height: 130px;
   display: flex;
   gap: 16px;
+  align-items: center;
 }
 
 .stat-number {
@@ -548,6 +607,72 @@ a {
   line-height: 1.5;
 }
 
+.home-contact-cta {
+  margin-top: 46px;
+  margin-bottom: 20px;
+  padding: 28px;
+  border: 1px solid #33415d;
+  background: linear-gradient(165deg, rgba(22, 33, 52, 0.95), rgba(17, 27, 44, 0.95));
+}
+
+.home-contact-cta-head {
+  max-width: 760px;
+  margin-bottom: 20px;
+}
+
+.home-contact-cta-head h2 {
+  font-family: "Sora", sans-serif;
+  font-size: clamp(1.45rem, 3vw, 2rem);
+  margin-bottom: 10px;
+}
+
+.home-contact-cta-head p {
+  color: #bac5d8;
+  line-height: 1.6;
+}
+
+.home-contact-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.home-contact-form h3 {
+  font-family: "Sora", sans-serif;
+  font-size: 1.1rem;
+}
+
+.consent-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.consent-row input {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  accent-color: var(--accent);
+}
+
+.home-contact-data {
+  background: rgba(15, 24, 40, 0.95);
+}
+
+.home-contact-data p {
+  margin-bottom: 4px;
+}
+
+.home-contact-link {
+  margin-top: 10px;
+  display: inline-block;
+}
+
 .card {
   position: relative;
   min-height: 320px;
@@ -567,19 +692,19 @@ a {
 }
 
 .card-1::before {
-  background-image: url("https://images.unsplash.com/photo-1493666438817-866a91353ca9?auto=format&fit=crop&w=900&q=80");
+  background-image: url("https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=900&q=80");
 }
 
 .card-2::before {
-  background-image: url("https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=900&q=80");
+  background-image: url("https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80");
 }
 
 .card-3::before {
-  background-image: url("https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80");
+  background-image: url("https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80");
 }
 
 .card-4::before {
-  background-image: url("https://images.unsplash.com/photo-1484101403633-562f891dc89a?auto=format&fit=crop&w=900&q=80");
+  background-image: url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=80");
 }
 
 .card:hover::before {
@@ -1150,6 +1275,15 @@ select {
   font-size: 0.84rem;
 }
 
+.footer-credit a {
+  color: #d7b06a;
+  text-decoration: none;
+}
+
+.footer-credit a:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 1024px) {
   .about {
     grid-template-columns: 1fr;
@@ -1182,9 +1316,16 @@ select {
   .detail-grid {
     grid-template-columns: 1fr;
   }
+
+  .home-contact-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 760px) {
+  #tasar{
+    display: none;
+  }
   .topbar,
   .nav-links {
     display: none;

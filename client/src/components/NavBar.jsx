@@ -1,23 +1,30 @@
 import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
-import { menuStructure } from "../data/menu";
 import Footer from "./Footer";
 
 function MobileMenu({ onClose }) {
+  const links = [
+    { to: "/", label: "Inicio" },
+    { to: "/propiedades/en-venta", label: "Propiedades" },
+    { to: "/servicios", label: "Servicios" },
+    { to: "/nosotros", label: "Nosotros" },
+    { to: "/contacto", label: "Contacto" },
+  ];
   return (
-    <div className="mobile-panel container">
-      <div className="mega-grid">
-        {menuStructure.map((section) => (
-          <div key={section.title} className="mega-section">
-            <h4>{section.title}</h4>
-            {section.items.map((item) => (
-              <NavLink key={item.to} to={item.to} onClick={onClose}>
-                {item.label}
-              </NavLink>
-            ))}
-          </div>
+    <div className="mobile-overlay">
+      <button type="button" className="mobile-overlay-close" onClick={onClose} aria-label="Cerrar menú">
+        <i className="fa-solid fa-xmark" aria-hidden="true" />
+      </button>
+      <nav className="mobile-overlay-nav">
+        {links.map((link) => (
+          <NavLink key={link.to} to={link.to} className="mobile-overlay-link" onClick={onClose}>
+            {link.label}
+          </NavLink>
         ))}
-      </div>
+      </nav>
+      <NavLink to="/tasaciones" className="mobile-overlay-cta" onClick={onClose}>
+        TASAR PROPIEDAD
+      </NavLink>
     </div>
   );
 }
@@ -34,7 +41,7 @@ function NavContent({ mobileOpen, setMobileOpen }) {
         <div className="topbar-right">
           <span>Buenos Aires</span>
           <span>|</span>
-          <span>+54 11 4582 9912</span>
+          <span>WhatsApp: 011 3360-0537</span>
         </div>
       </div>
 
@@ -56,7 +63,7 @@ function NavContent({ mobileOpen, setMobileOpen }) {
           <li><NavLink to="/contacto">Contacto</NavLink></li>
         </ul>
 
-        <NavLink to="/tasaciones" className="cta-small">TASAR PROPIEDAD</NavLink>
+        <NavLink to="/tasaciones" id="tasar" className="cta-small">TASAR PROPIEDAD</NavLink>
 
         <button
           type="button"

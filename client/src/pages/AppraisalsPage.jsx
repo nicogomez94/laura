@@ -61,7 +61,7 @@ export default function AppraisalsPage() {
               />
             </label>
             <label>
-              Telefono
+              WhatsApp
               <input
                 name="phone"
                 value={form.phone}

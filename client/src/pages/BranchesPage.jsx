@@ -2,21 +2,21 @@ const BRANCHES = [
   {
     name: "Casa Central Recoleta",
     address: "Arenales 1824, CABA",
-    phone: "+54 11 4582 9912",
+    phone: "011 3360-0537",
     hours: "Lunes a viernes de 9:00 a 18:30",
     focus: "Residencial premium y alquileres temporarios"
   },
   {
     name: "Sucursal Belgrano",
     address: "Av. Cabildo 2481, CABA",
-    phone: "+54 11 3321 4405",
+    phone: "011 3360-0537",
     hours: "Lunes a viernes de 9:30 a 18:00",
     focus: "Departamentos para inversion y renta"
   },
   {
     name: "Sucursal Nordelta",
     address: "Av. Del Puerto 240, Tigre",
-    phone: "+54 11 6842 0031",
+    phone: "011 3360-0537",
     hours: "Lunes a sabados de 10:00 a 19:00",
     focus: "Casas, barrios cerrados y lotes"
   }
@@ -39,7 +39,7 @@ export default function BranchesPage() {
           <article key={branch.name} className="info-card">
             <h3>{branch.name}</h3>
             <p><strong>Direccion:</strong> {branch.address}</p>
-            <p><strong>Telefono:</strong> {branch.phone}</p>
+            <p><strong>WhatsApp:</strong> {branch.phone}</p>
             <p><strong>Horario:</strong> {branch.hours}</p>
             <p><strong>Especialidad:</strong> {branch.focus}</p>
           </article>

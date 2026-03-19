@@ -37,11 +37,8 @@ export default function ContactPage() {
       <section className="split-section">
         <article className="info-card">
           <h3>Canales directos</h3>
-          <p><strong>Telefono:</strong> +54 11 4582 9912</p>
-          <p><strong>WhatsApp:</strong> +54 9 11 4582 9912</p>
-          <p><strong>Email:</strong> contacto@lgpropiedades.com.ar</p>
-          <p><strong>Direccion:</strong> Arenales 1824, Recoleta, CABA</p>
-          <p><strong>Horario:</strong> Lunes a viernes de 9:00 a 18:30</p>
+          <p><strong>WhatsApp:</strong> 011 3360-0537</p>
+          <p><strong>Email:</strong> info@lauragutierrezpropiedades.com.ar</p>
         </article>
 
         <form className="form-card" onSubmit={handleSubmit}>
@@ -57,7 +54,7 @@ export default function ContactPage() {
               />
             </label>
             <label>
-              Telefono
+              WhatsApp
               <input
                 name="phone"
                 value={form.phone}

@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 
 const TABS = ["Comprar", "Alquilar", "Tasación"];
 const COLLECTIONS = [
-  { title: "Propiedades\nen Countries", to: "/propiedades/en-venta", cardClass: "card-1", icon: "fa-tree-city" },
-  { title: "Departamentos\nen Venta", to: "/propiedades/en-venta", cardClass: "card-2", icon: "fa-building" },
-  { title: "Casas\nResidenciales", to: "/propiedades/en-venta", cardClass: "card-3", icon: "fa-house-chimney" },
-  { title: "Inversiones\nPremium", to: "/propiedades/en-venta", cardClass: "card-4", icon: "fa-chart-line" }
+  { title: "Casas\nen Venta", to: "/propiedades/en-venta", cardClass: "card-1", icon: "fa-house" },
+  { title: "Departamentos\nen Alquiler", to: "/propiedades/en-alquiler", cardClass: "card-2", icon: "fa-key" },
+  { title: "Locales\nComerciales", to: "/propiedades/en-venta", cardClass: "card-3", icon: "fa-shop" },
+  { title: "Lotes y\nTerrenos", to: "/propiedades/en-venta", cardClass: "card-4", icon: "fa-ruler-combined" }
 ];
 const PILLARS = [
   {
@@ -30,6 +30,14 @@ const PILLARS = [
     icon: "fa-shield-halved"
   }
 ];
+
+const INITIAL_CTA_FORM = {
+  fullName: "",
+  email: "",
+  phone: "",
+  message: "",
+  consent: false
+};
 
 function HeroContent() {
   const [activeTab, setActiveTab] = useState(0);
@@ -102,6 +110,107 @@ function HeroContent() {
   );
 }
 
+function HomeContactCta() {
+  const [form, setForm] = useState(INITIAL_CTA_FORM);
+  const [sent, setSent] = useState(false);
+
+  function handleChange(event) {
+    const { name, value, type, checked } = event.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value
+    }));
+    if (sent) setSent(false);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    setSent(true);
+    setForm(INITIAL_CTA_FORM);
+  }
+
+  return (
+    <section className="home-contact-cta container">
+      <div className="home-contact-cta-head">
+        <p className="section-kicker">HABLEMOS DE TU PROPIEDAD</p>
+        <h2>Recibí asesoramiento personalizado hoy</h2>
+        <p>
+          Completá tus datos y te contactamos para ayudarte con compra, venta,
+          alquiler o tasación.
+        </p>
+      </div>
+
+      <div className="home-contact-grid">
+        <form className="form-card home-contact-form" onSubmit={handleSubmit}>
+          <h3>Solicitar contacto</h3>
+          <div className="form-grid">
+            <label>
+              Nombre y apellido
+              <input
+                name="fullName"
+                value={form.fullName}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              Email
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              WhatsApp
+              <input
+                name="phone"
+                value={form.phone}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              Mensaje
+              <input
+                name="message"
+                value={form.message}
+                onChange={handleChange}
+                placeholder="Ej: Quiero vender un departamento en Recoleta."
+                required
+              />
+            </label>
+          </div>
+
+          <label className="consent-row">
+            <input
+              type="checkbox"
+              name="consent"
+              checked={form.consent}
+              onChange={handleChange}
+              required
+            />
+            <span>Acepto el tratamiento de mis datos personales para ser contactado.</span>
+          </label>
+
+          <button type="submit" className="btn-primary">QUIERO QUE ME CONTACTEN</button>
+          {sent ? <p className="success-text">Gracias. Recibimos tu consulta y te escribimos pronto.</p> : null}
+        </form>
+
+        <article className="info-card home-contact-data">
+          <h3>Datos personales y contacto</h3>
+          <p><strong>Asesor comercial:</strong> Laura Gutierrez</p>
+          <p><strong>WhatsApp:</strong> 011 3360-0537</p>
+          <p><strong>Email:</strong> info@lauragutierrezpropiedades.com.ar</p>
+          <Link to="/contacto" className="cta-small home-contact-link">IR A CONTACTO COMPLETO</Link>
+        </article>
+      </div>
+    </section>
+  );
+}
+
 export default function HomePage() {
   return (
     <>
@@ -109,27 +218,27 @@ export default function HomePage() {
       <main className="dark-block">
         <section className="about container">
           <div className="stat-box">
-            <span className="stat-number">25</span>
+            <span className="stat-number">+10</span>
             <span className="stat-label">
               años
               <br />
-              liderando el
+              ayudando
               <br />
-              mercado local
+              a la gente
             </span>
           </div>
           <div className="about-copy">
             <p className="section-kicker">SOBRE NOSOTROS</p>
-            <h2>Gestión inmobiliaria profesional para cada etapa de tu operación</h2>
+            <h2>Una inmobiliaria de confianza, con atención personalizada</h2>
           </div>
           <div className="about-text">
             <p>
-              Conectamos compradores, vendedores e inversores con oportunidades
-              reales en barrios estratégicos. Te acompañamos desde la tasación
-              hasta la firma de escritura o contrato.
+              Trabajamos con seriedad y compromiso para ayudarte a comprar,
+              vender o alquilar tu propiedad. Conocemos la zona y te
+              acompañamos en cada paso del proceso.
             </p>
             <Link to="/nosotros" className="btn-secondary">
-              CONOCER LA EMPRESA
+              CONOCENOS
             </Link>
           </div>
         </section>
@@ -167,6 +276,7 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+        <HomeContactCta />
       </main>
     </>
   );
