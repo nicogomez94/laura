@@ -1265,6 +1265,22 @@ select {
   color: #f0f3f8;
 }
 
+.footer-socials {
+  display: flex;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.footer-socials a {
+  color: #b8c2d5;
+  font-size: 0.92rem;
+  text-decoration: none;
+}
+
+.footer-socials a:hover {
+  color: #f0f3f8;
+}
+
 .footer-bottom {
   border-top: 1px solid #263148;
   padding: 14px 0;

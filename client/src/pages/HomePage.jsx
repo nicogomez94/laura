@@ -218,7 +218,7 @@ export default function HomePage() {
       <main className="dark-block">
         <section className="about container">
           <div className="stat-box">
-            <span className="stat-number">+10</span>
+            <span className="stat-number">+4</span>
             <span className="stat-label">
               años
               <br />

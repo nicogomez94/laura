@@ -27,6 +27,22 @@ export default function Footer() {
           <p className="footer-title">Contacto</p>
           <p className="footer-text">WhatsApp: 011 3360-0537</p>
           <p className="footer-text">Email: info@lauragutierrezpropiedades.com.ar</p>
+          <div className="footer-socials">
+            <a
+              href="https://www.facebook.com/profile.php?id=100084073331126"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Facebook
+            </a>
+            <a
+              href="https://www.instagram.com/lgcpropiedades/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Instagram
+            </a>
+          </div>
         </div>
       </div>
 
