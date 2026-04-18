@@ -8,6 +8,17 @@ const API_BASE_URL = rawApiBaseUrl
         : `https://${rawApiBaseUrl}`
     ).replace(/\/+$/, "")
   : "";
+const IMAGE_UPLOAD_MAX_BYTES = 5 * 1024 * 1024;
+const IMAGE_UPLOAD_MAX_MB = IMAGE_UPLOAD_MAX_BYTES / (1024 * 1024);
+const IMAGE_UPLOAD_TOO_LARGE_MESSAGE = `La imagen supera el tamano permitido de ${IMAGE_UPLOAD_MAX_MB} MB. Elegi un archivo mas liviano.`;
+
+function getErrorMessage(response, errorBody) {
+  if (response.status === 413) {
+    return errorBody.message || IMAGE_UPLOAD_TOO_LARGE_MESSAGE;
+  }
+
+  return errorBody.message || "Error de servidor";
+}
 
 function buildQuery(params = {}) {
   const query = new URLSearchParams();
@@ -45,7 +56,7 @@ async function request(path, options = {}) {
 
   if (!response.ok) {
     const errorBody = await response.json().catch(() => ({}));
-    throw new Error(errorBody.message || "Error de servidor");
+    throw new Error(getErrorMessage(response, errorBody));
   }
 
   if (response.status === 204) {
@@ -92,6 +103,10 @@ export const api = {
     });
   },
   uploadImage(file) {
+    if (file.size > IMAGE_UPLOAD_MAX_BYTES) {
+      return Promise.reject(new Error(IMAGE_UPLOAD_TOO_LARGE_MESSAGE));
+    }
+
     const formData = new FormData();
     formData.append("file", file);
     return request("/api/admin/upload", {
@@ -101,4 +116,4 @@ export const api = {
   }
 };
 
-export { API_BASE_URL };
+export { API_BASE_URL, IMAGE_UPLOAD_MAX_MB };

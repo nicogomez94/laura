@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { categories, operationStatuses } from "../data/menu";
-import { api, API_BASE_URL } from "../lib/api";
+import { api, API_BASE_URL, IMAGE_UPLOAD_MAX_MB } from "../lib/api";
 import { clearSession, getUser, isLoggedIn } from "../lib/auth";
 import { getDebugPropertyDraft } from "../lib/debugPrefill";
 
@@ -168,6 +168,8 @@ export default function AdminDashboardPage() {
     if (!file) {
       return;
     }
+
+    setError("");
     setUploading(true);
     try {
       const result = await api.uploadImage(file);
@@ -454,6 +456,9 @@ export default function AdminDashboardPage() {
                   />
                 </label>
               </div>
+              <p className="field-help">
+                Acepta PNG, JPG y WEBP de hasta {IMAGE_UPLOAD_MAX_MB} MB.
+              </p>
               <div className="image-preview-grid">
                 {form.images.map((image, index) => (
                   <div key={`${image.url}-${index}`} className="image-preview-item">

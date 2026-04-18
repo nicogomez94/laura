@@ -25,7 +25,16 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ storage });
+const IMAGE_UPLOAD_MAX_BYTES = 5 * 1024 * 1024;
+const IMAGE_UPLOAD_MAX_MB = IMAGE_UPLOAD_MAX_BYTES / (1024 * 1024);
+const IMAGE_UPLOAD_TOO_LARGE_MESSAGE = `La imagen supera el tamano permitido de ${IMAGE_UPLOAD_MAX_MB} MB. Elegi un archivo mas liviano.`;
+
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: IMAGE_UPLOAD_MAX_BYTES
+  }
+});
 
 function parsePropertyBody(req) {
   const body = req.body || {};
@@ -163,13 +172,24 @@ router.delete("/properties/:id", async (req, res) => {
   return res.status(204).send();
 });
 
-router.post("/upload", upload.single("file"), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ message: "No se envio archivo." });
-  }
+router.post("/upload", (req, res) => {
+  upload.single("file")(req, res, (error) => {
+    if (error instanceof multer.MulterError && error.code === "LIMIT_FILE_SIZE") {
+      return res.status(413).json({ message: IMAGE_UPLOAD_TOO_LARGE_MESSAGE });
+    }
 
-  const fileUrl = `/uploads/${req.file.filename}`;
-  return res.status(201).json({ url: fileUrl });
+    if (error) {
+      console.error("Error al subir imagen:", error.message);
+      return res.status(500).json({ message: "No se pudo subir la imagen." });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ message: "No se envio archivo." });
+    }
+
+    const fileUrl = `/uploads/${req.file.filename}`;
+    return res.status(201).json({ url: fileUrl });
+  });
 });
 
 export default router;
