@@ -1,5 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  isValidEmail,
+  submitContactForm,
+  trimFormValues
+} from "../lib/contactForm";
 
 const TABS = ["Comprar", "Alquilar", "Tasación"];
 const COLLECTIONS = [
@@ -112,7 +117,8 @@ function HeroContent() {
 
 function HomeContactCta() {
   const [form, setForm] = useState(INITIAL_CTA_FORM);
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState("idle");
+  const [feedback, setFeedback] = useState("");
 
   function handleChange(event) {
     const { name, value, type, checked } = event.target;
@@ -120,13 +126,55 @@ function HomeContactCta() {
       ...prev,
       [name]: type === "checkbox" ? checked : value
     }));
-    if (sent) setSent(false);
+    if (status !== "idle") {
+      setStatus("idle");
+      setFeedback("");
+    }
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    setSent(true);
-    setForm(INITIAL_CTA_FORM);
+
+    const trimmedForm = trimFormValues(form);
+    const name = trimmedForm.fullName;
+    const email = trimmedForm.email;
+    const message = trimmedForm.message;
+
+    setForm(trimmedForm);
+
+    if (!name || !email || !message) {
+      setStatus("error");
+      setFeedback("Completá nombre, email y mensaje.");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setStatus("error");
+      setFeedback("Ingresá un email válido.");
+      return;
+    }
+
+    setStatus("loading");
+    setFeedback("");
+
+    try {
+      const composedMessage = trimmedForm.phone
+        ? `${message}\n\nWhatsApp: ${trimmedForm.phone}`
+        : message;
+
+      await submitContactForm({
+        name,
+        email,
+        message: composedMessage
+      });
+
+      setStatus("success");
+      setFeedback("Gracias. Recibimos tu consulta y te escribimos pronto.");
+      setForm(INITIAL_CTA_FORM);
+    } catch (error) {
+      setStatus("error");
+      setFeedback(error.message || "No se pudo enviar la consulta.");
+    }
   }
 
   return (
@@ -169,7 +217,6 @@ function HomeContactCta() {
                 name="phone"
                 value={form.phone}
                 onChange={handleChange}
-                required
               />
             </label>
             <label>
@@ -195,8 +242,16 @@ function HomeContactCta() {
             <span>Acepto el tratamiento de mis datos personales para ser contactado.</span>
           </label>
 
-          <button type="submit" className="btn-primary">QUIERO QUE ME CONTACTEN</button>
-          {sent ? <p className="success-text">Gracias. Recibimos tu consulta y te escribimos pronto.</p> : null}
+          <button
+            type="submit"
+            className="btn-primary"
+            disabled={status === "loading"}
+          >
+            {status === "loading" ? "ENVIANDO..." : "QUIERO QUE ME CONTACTEN"}
+          </button>
+          {status === "loading" ? <p aria-live="polite">Enviando consulta...</p> : null}
+          {status === "success" ? <p className="success-text">{feedback}</p> : null}
+          {status === "error" ? <p className="error-text">{feedback}</p> : null}
         </form>
 
         <article className="info-card home-contact-data">

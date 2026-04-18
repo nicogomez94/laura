@@ -1,4 +1,9 @@
 import { useState } from "react";
+import {
+  isValidEmail,
+  submitContactForm,
+  trimFormValues
+} from "../lib/contactForm";
 
 const INITIAL_FORM = {
   fullName: "",
@@ -10,17 +15,71 @@ const INITIAL_FORM = {
 
 export default function ContactPage() {
   const [form, setForm] = useState(INITIAL_FORM);
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState("idle");
+  const [feedback, setFeedback] = useState("");
 
   function handleChange(event) {
     const { name, value } = event.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+    if (status !== "idle") {
+      setStatus("idle");
+      setFeedback("");
+    }
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    setSent(true);
-    setForm(INITIAL_FORM);
+
+    const trimmedForm = trimFormValues(form);
+    const name = trimmedForm.fullName;
+    const email = trimmedForm.email;
+    const message = trimmedForm.message;
+
+    setForm(trimmedForm);
+
+    if (!name || !email || !message) {
+      setStatus("error");
+      setFeedback("Completá nombre, email y mensaje.");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setStatus("error");
+      setFeedback("Ingresá un email válido.");
+      return;
+    }
+
+    setStatus("loading");
+    setFeedback("");
+
+    try {
+      const reasonLabels = {
+        compra: "Comprar",
+        venta: "Vender",
+        alquiler: "Alquilar",
+        inversion: "Invertir"
+      };
+
+      const composedMessage = [
+        message,
+        "",
+        `Motivo: ${reasonLabels[trimmedForm.reason] || trimmedForm.reason}`,
+        `WhatsApp: ${trimmedForm.phone || "-"}`
+      ].join("\n");
+
+      await submitContactForm({
+        name,
+        email,
+        message: composedMessage
+      });
+
+      setStatus("success");
+      setFeedback("Consulta enviada. Te respondemos a la brevedad.");
+      setForm(INITIAL_FORM);
+    } catch (error) {
+      setStatus("error");
+      setFeedback(error.message || "No se pudo enviar la consulta.");
+    }
   }
 
   return (
@@ -59,7 +118,6 @@ export default function ContactPage() {
                 name="phone"
                 value={form.phone}
                 onChange={handleChange}
-                required
               />
             </label>
             <label>
@@ -97,12 +155,16 @@ export default function ContactPage() {
               required
             />
           </label>
-          <button type="submit" className="btn-primary">Enviar mensaje</button>
-          {sent ? (
-            <p className="success-text">
-              Consulta enviada. Te respondemos a la brevedad.
-            </p>
-          ) : null}
+          <button
+            type="submit"
+            className="btn-primary"
+            disabled={status === "loading"}
+          >
+            {status === "loading" ? "ENVIANDO..." : "Enviar mensaje"}
+          </button>
+          {status === "loading" ? <p aria-live="polite">Enviando consulta...</p> : null}
+          {status === "success" ? <p className="success-text">{feedback}</p> : null}
+          {status === "error" ? <p className="error-text">{feedback}</p> : null}
         </form>
       </section>
     </main>

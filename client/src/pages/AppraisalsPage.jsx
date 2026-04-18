@@ -1,4 +1,9 @@
 import { useState } from "react";
+import {
+  isValidEmail,
+  submitContactForm,
+  trimFormValues
+} from "../lib/contactForm";
 
 const INITIAL_FORM = {
   fullName: "",
@@ -13,17 +18,78 @@ const INITIAL_FORM = {
 
 export default function AppraisalsPage() {
   const [form, setForm] = useState(INITIAL_FORM);
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState("idle");
+  const [feedback, setFeedback] = useState("");
 
   function handleChange(event) {
     const { name, value } = event.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+    if (status !== "idle") {
+      setStatus("idle");
+      setFeedback("");
+    }
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    setSent(true);
-    setForm(INITIAL_FORM);
+
+    const trimmedForm = trimFormValues(form);
+    const name = trimmedForm.fullName;
+    const email = trimmedForm.email;
+    const message = trimmedForm.message;
+
+    setForm(trimmedForm);
+
+    if (!name || !email || !message) {
+      setStatus("error");
+      setFeedback("Completá nombre, email y mensaje.");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setStatus("error");
+      setFeedback("Ingresá un email válido.");
+      return;
+    }
+
+    setStatus("loading");
+    setFeedback("");
+
+    try {
+      const operationLabels = {
+        venta: "Venta",
+        alquiler: "Alquiler"
+      };
+      const propertyLabels = {
+        departamento: "Departamento",
+        casa: "Casa",
+        ph: "PH",
+        lote: "Lote"
+      };
+
+      const composedMessage = [
+        message,
+        "",
+        `Operacion: ${operationLabels[trimmedForm.operationType] || trimmedForm.operationType}`,
+        `Tipo de propiedad: ${propertyLabels[trimmedForm.propertyType] || trimmedForm.propertyType}`,
+        `Barrio / zona: ${trimmedForm.neighborhood || "-"}`,
+        `Metros cuadrados estimados: ${trimmedForm.estimatedM2 || "-"}`,
+        `WhatsApp: ${trimmedForm.phone || "-"}`
+      ].join("\n");
+
+      await submitContactForm({
+        name,
+        email,
+        message: composedMessage
+      });
+
+      setStatus("success");
+      setFeedback("Solicitud enviada. Te contactamos dentro de las proximas 24 hs.");
+      setForm(INITIAL_FORM);
+    } catch (error) {
+      setStatus("error");
+      setFeedback(error.message || "No se pudo enviar la solicitud.");
+    }
   }
 
   return (
@@ -66,7 +132,6 @@ export default function AppraisalsPage() {
                 name="phone"
                 value={form.phone}
                 onChange={handleChange}
-                required
               />
             </label>
             <label>
@@ -132,14 +197,19 @@ export default function AppraisalsPage() {
               value={form.message}
               onChange={handleChange}
               placeholder="Ej: piso alto, estado general, amenities, cochera..."
+              required
             />
           </label>
-          <button type="submit" className="btn-primary">Enviar solicitud</button>
-          {sent ? (
-            <p className="success-text">
-              Solicitud enviada. Te contactamos dentro de las proximas 24 hs.
-            </p>
-          ) : null}
+          <button
+            type="submit"
+            className="btn-primary"
+            disabled={status === "loading"}
+          >
+            {status === "loading" ? "ENVIANDO..." : "Enviar solicitud"}
+          </button>
+          {status === "loading" ? <p aria-live="polite">Enviando solicitud...</p> : null}
+          {status === "success" ? <p className="success-text">{feedback}</p> : null}
+          {status === "error" ? <p className="error-text">{feedback}</p> : null}
         </form>
       </section>
     </main>
