@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
+import { menuStructure } from "../data/menu";
 import Footer from "./Footer";
+
+const propertyMenuItems = menuStructure
+  .filter((section) => ["PROPIEDADES", "EMPRENDIMIENTOS"].includes(section.title))
+  .flatMap((section) => section.items);
 
 function MobileMenu({ onClose }) {
   const links = [
     { to: "/", label: "Inicio" },
-    { to: "/propiedades/en-venta", label: "Propiedades" },
     { to: "/servicios", label: "Servicios" },
     { to: "/nosotros", label: "Nosotros" },
     { to: "/contacto", label: "Contacto" },
@@ -21,6 +25,23 @@ function MobileMenu({ onClose }) {
             {link.label}
           </NavLink>
         ))}
+        <div className="mobile-overlay-group">
+          <NavLink to="/propiedades/en-venta" className="mobile-overlay-link" onClick={onClose}>
+            Propiedades
+          </NavLink>
+          <div className="mobile-overlay-sublinks">
+            {propertyMenuItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className="mobile-overlay-sublink"
+                onClick={onClose}
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </div>
+        </div>
       </nav>
       <NavLink to="/tasaciones" className="mobile-overlay-cta" onClick={onClose}>
         TASAR PROPIEDAD
@@ -56,7 +77,21 @@ function NavContent({ mobileOpen, setMobileOpen }) {
 
         <ul className="nav-links">
           <li><NavLink to="/">Inicio</NavLink></li>
-          <li><NavLink to="/propiedades/en-venta">Propiedades</NavLink></li>
+          <li className="nav-dropdown">
+            <NavLink to="/propiedades/en-venta" className="nav-dropdown-trigger">
+              Propiedades
+            </NavLink>
+            <div className="nav-dropdown-menu" aria-label="Tipos de propiedades">
+              <span className="nav-dropdown-label">Estado</span>
+              <div className="nav-dropdown-links">
+                {propertyMenuItems.map((item) => (
+                  <NavLink key={item.to} to={item.to} className="nav-dropdown-link">
+                    {item.label}
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+          </li>
           {/* <li><NavLink to="/sucursales">Zonas</NavLink></li> */}
           <li><NavLink to="/servicios">Servicios</NavLink></li>
           <li><NavLink to="/nosotros">Nosotros</NavLink></li>

@@ -12,6 +12,9 @@ import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import ServicesPage from "./pages/ServicesPage";
 
+const WHATSAPP_URL =
+  "https://wa.me/5491133600537?text=Hola%20Laura,%20quisiera%20hacer%20una%20consulta.";
+
 function AppRoutes() {
   return (
     <Routes>
@@ -36,11 +39,26 @@ function AppRoutes() {
   );
 }
 
+function WhatsAppFloatingButton() {
+  return (
+    <a
+      href={WHATSAPP_URL}
+      className="whatsapp-float"
+      target="_blank"
+      rel="noreferrer"
+      aria-label="Abrir chat de WhatsApp"
+    >
+      <i className="fa-brands fa-whatsapp" aria-hidden="true" />
+    </a>
+  );
+}
+
 function App() {
   return (
     <BrowserRouter>
       <ScrollRevealManager />
       <AppRoutes />
+      <WhatsAppFloatingButton />
     </BrowserRouter>
   );
 }
