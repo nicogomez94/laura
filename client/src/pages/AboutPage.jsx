@@ -1,21 +1,21 @@
 const METRICS = [
-  { value: "+25", label: "Anios de experiencia" },
+  { value: "+25", label: "Años de trayectoria" },
   { value: "3.500", label: "Operaciones cerradas" },
-  { value: "92%", label: "Propiedades vendidas en menos de 90 dias" }
+  { value: "92%", label: "Propiedades vendidas en menos de 90 días" }
 ];
 
 const VALUES = [
   {
-    title: "Transparencia comercial",
-    text: "Informes claros de mercado, visitas calificadas y reportes semanales."
+    title: "Trato cercano y directo",
+    text: "Cada cliente habla directamente con Laura o con alguno de sus asesores de confianza. Sin intermediarios, sin burocracia."
   },
   {
-    title: "Asesoria legal integral",
-    text: "Acompanamiento documental, reservas, boletos y escritura."
+    title: "Conocimiento real del mercado",
+    text: "Más de dos décadas operando en CABA y zona norte nos dan una lectura afinada de precios, zonas y oportunidades."
   },
   {
-    title: "Marketing inmobiliario",
-    text: "Produccion audiovisual, pauta digital y cartera activa de clientes."
+    title: "Acompañamiento hasta el final",
+    text: "Desde la primera consulta hasta la firma de escritura. Gestionamos reservas, boletos y trámites notariales sin que tengas que preocuparte."
   }
 ];
 
@@ -24,10 +24,12 @@ export default function AboutPage() {
     <main className="page container info-page">
       <header className="info-hero">
         <p className="section-kicker">NOSOTROS</p>
-        <h1 className="page-title">Una inmobiliaria orientada a resultados</h1>
+        <h1 className="page-title">Más de 25 años haciendo lo que nos apasiona</h1>
         <p className="page-text">
-          Combinamos estrategia de pricing, tecnologia comercial y seguimiento
-          personalizado para que cada operacion llegue a buen termino.
+          Laura fundó esta inmobiliaria con una convicción simple: que comprar,
+          vender o alquilar una propiedad debería ser una experiencia clara,
+          segura y sin sobresaltos. Esa filosofía sigue siendo el núcleo de todo
+          lo que hacemos.
         </p>
       </header>
 
@@ -38,6 +40,24 @@ export default function AboutPage() {
             <p>{metric.label}</p>
           </article>
         ))}
+      </section>
+
+      <section className="info-section">
+        <h2 className="section-title">Quiénes somos</h2>
+        <p className="page-text">
+          Somos un equipo de asesores inmobiliarios con base en Recoleta y
+          presencia en Belgrano y Nordelta. Laura lidera el equipo desde hace
+          más de dos décadas: empezó gestionando alquileres en el barrio y fue
+          creciendo junto a sus clientes, muchos de los cuales hoy vuelven para
+          su segunda o tercera operación.
+        </p>
+        <p className="page-text" style={{ marginTop: "1rem" }}>
+          Lo que nos diferencia no es el tamaño, sino la dedicación. Cada
+          propiedad recibe una estrategia de comercialización a medida:
+          tasación fundamentada, fotografía profesional, publicación en los
+          principales portales y seguimiento activo de cada interesado. No
+          esperamos consultas; trabajamos para generarlas.
+        </p>
       </section>
 
       <section className="info-grid">

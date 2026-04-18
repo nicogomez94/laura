@@ -32,15 +32,19 @@ export default function Footer() {
               href="https://www.facebook.com/profile.php?id=100084073331126"
               target="_blank"
               rel="noreferrer"
+              aria-label="Facebook"
             >
-              Facebook
+              <i className="fa-brands fa-facebook-f" aria-hidden="true" />
+              <span>Facebook</span>
             </a>
             <a
               href="https://www.instagram.com/lgcpropiedades/"
               target="_blank"
               rel="noreferrer"
+              aria-label="Instagram"
             >
-              Instagram
+              <i className="fa-brands fa-instagram" aria-hidden="true" />
+              <span>Instagram</span>
             </a>
           </div>
         </div>

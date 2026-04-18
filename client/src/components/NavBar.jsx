@@ -54,10 +54,31 @@ function NavContent({ mobileOpen, setMobileOpen }) {
   return (
     <>
       <div className="topbar container">
-        <div className="topbar-left">
-          <span>in</span>
-          <span>fb</span>
-          <span>ig</span>
+        <div className="topbar-left topbar-socials">
+          <a
+            href="https://www.linkedin.com/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="LinkedIn"
+          >
+            <i className="fa-brands fa-linkedin-in" aria-hidden="true" />
+          </a>
+          <a
+            href="https://www.facebook.com/profile.php?id=100084073331126"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Facebook"
+          >
+            <i className="fa-brands fa-facebook-f" aria-hidden="true" />
+          </a>
+          <a
+            href="https://www.instagram.com/lgcpropiedades/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Instagram"
+          >
+            <i className="fa-brands fa-instagram" aria-hidden="true" />
+          </a>
         </div>
         <div className="topbar-right">
           <span>Buenos Aires</span>
