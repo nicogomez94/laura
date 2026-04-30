@@ -1,4 +1,5 @@
 import { Router } from "express";
+import QRCode from "qrcode";
 import { prisma } from "../lib/prisma.js";
 
 const router = Router();
@@ -50,6 +51,31 @@ router.get("/:slug", async (req, res) => {
   }
 
   return res.json(property);
+});
+
+router.get("/:slug/qr", async (req, res) => {
+  const { slug } = req.params;
+
+  const property = await prisma.property.findUnique({
+    where: { slug },
+    select: { slug: true }
+  });
+
+  if (!property) {
+    return res.status(404).json({ message: "Propiedad no encontrada." });
+  }
+
+  const rawClientOrigin = process.env.CLIENT_ORIGIN || "http://localhost:5173";
+  const clientOrigin = /^https?:\/\//i.test(rawClientOrigin)
+    ? rawClientOrigin
+    : `https://${rawClientOrigin}`;
+
+  const propertyUrl = `${clientOrigin}/propiedades/ficha/${property.slug}`;
+  const qrBuffer = await QRCode.toBuffer(propertyUrl, { type: "png", width: 400 });
+
+  res.set("Content-Type", "image/png");
+  res.set("Content-Disposition", `inline; filename="qr-${slug}.png"`);
+  return res.send(qrBuffer);
 });
 
 export default router;

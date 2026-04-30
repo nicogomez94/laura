@@ -48,6 +48,7 @@ export default function AdminDashboardPage() {
   const [imageUrl, setImageUrl] = useState("");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
+  const [qrItem, setQrItem] = useState(null);
 
   const user = useMemo(() => getUser(), []);
 
@@ -203,6 +204,7 @@ export default function AdminDashboardPage() {
   }
 
   return (
+    <>
     <main className="page container admin-page">
       <div className="admin-header">
         <h1 className="page-title">Admin Propiedades</h1>
@@ -242,6 +244,9 @@ export default function AdminDashboardPage() {
                 <div className="admin-list-actions">
                   <button type="button" onClick={() => startEdit(item)}>
                     Editar
+                  </button>
+                  <button type="button" onClick={() => setQrItem(item)}>
+                    QR
                   </button>
                   <button type="button" onClick={() => handleDelete(item.id)}>
                     Eliminar
@@ -479,5 +484,41 @@ export default function AdminDashboardPage() {
         </article>
       </section>
     </main>
+
+    {qrItem ? (
+      <div className="qr-modal-overlay" onClick={() => setQrItem(null)}>
+        <div className="qr-modal" onClick={(e) => e.stopPropagation()}>
+          <h3>{qrItem.title}</h3>
+          <img
+            src={`${API_BASE_URL}/api/properties/${qrItem.slug}/qr`}
+            alt={`Codigo QR de ${qrItem.title}`}
+            className="qr-modal-image"
+          />
+          <p className="qr-modal-hint">Escaneá para abrir la ficha de la propiedad</p>
+          <div className="qr-modal-actions">
+            <button
+              type="button"
+              className="btn-main"
+              onClick={async () => {
+                const response = await fetch(`${API_BASE_URL}/api/properties/${qrItem.slug}/qr`);
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `qr-${qrItem.slug}.png`;
+                a.click();
+                URL.revokeObjectURL(url);
+              }}
+            >
+              Descargar PNG
+            </button>
+            <button type="button" className="btn-secondary" onClick={() => setQrItem(null)}>
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
+    ) : null}
+    </>
   );
 }
