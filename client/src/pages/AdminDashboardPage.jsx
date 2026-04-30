@@ -37,21 +37,6 @@ function mapFormData(form) {
   };
 }
 
-const STATUS_LABELS = {
-  EN_VENTA: "En venta",
-  EN_ALQUILER: "Alquiler",
-  EN_POZO: "En pozo",
-  VENDIDA: "Vendida",
-  ALQUILADA: "Alquilada"
-};
-
-const CATEGORY_LABELS = {
-  PROPIEDADES: "Propiedad",
-  EMPRENDIMIENTOS: "Emprendimiento",
-  LOCALES: "Local",
-  TERRENOS: "Terreno"
-};
-
 export default function AdminDashboardPage() {
   const navigate = useNavigate();
   const debugMode = String(import.meta.env.VITE_DEBUG_MODE).toLowerCase() === "true";
@@ -64,7 +49,6 @@ export default function AdminDashboardPage() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const [qrItem, setQrItem] = useState(null);
-  const [showFormModal, setShowFormModal] = useState(false);
 
   const user = useMemo(() => getUser(), []);
 
@@ -99,7 +83,6 @@ export default function AdminDashboardPage() {
     setSelectedId(null);
     setForm(emptyProperty);
     setError("");
-    setShowFormModal(true);
   }
 
   function startEdit(item) {
@@ -124,14 +107,6 @@ export default function AdminDashboardPage() {
       images: item.images || []
     });
     setError("");
-    setShowFormModal(true);
-  }
-
-  function closeFormModal() {
-    setShowFormModal(false);
-    setSelectedId(null);
-    setForm(emptyProperty);
-    setError("");
   }
 
   async function handleSubmit(event) {
@@ -148,7 +123,7 @@ export default function AdminDashboardPage() {
       }
       const data = await api.listAdminProperties();
       setItems(data);
-      closeFormModal();
+      startCreate();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -163,6 +138,9 @@ export default function AdminDashboardPage() {
     try {
       await api.deleteProperty(id);
       setItems((current) => current.filter((item) => item.id !== id));
+      if (selectedId === id) {
+        startCreate();
+      }
     } catch (err) {
       setError(err.message);
     }
@@ -229,15 +207,9 @@ export default function AdminDashboardPage() {
     <>
     <main className="page container admin-page">
       <div className="admin-header">
-        <div className="admin-header-left">
-          <h1 className="admin-title">Admin Propiedades</h1>
-          <span className="admin-count">{items.length} propiedades</span>
-        </div>
+        <h1 className="page-title">Admin Propiedades</h1>
         <div className="admin-header-actions">
-          <span className="admin-user">
-            <i className="ph ph-user-circle" />
-            {user?.username || "admin"}
-          </span>
+          <span>Usuario: {user?.username || "admin"}</span>
           <button
             className="btn-secondary"
             onClick={() => {
@@ -246,333 +218,272 @@ export default function AdminDashboardPage() {
             }}
             type="button"
           >
-            Cerrar sesión
+            Cerrar sesion
           </button>
         </div>
       </div>
 
-      <div className="admin-toolbar">
-        <button className="btn-main admin-new-btn" onClick={startCreate} type="button">
-          <i className="ph ph-plus" /> Nueva propiedad
-        </button>
-      </div>
-
-      {loadingList ? (
-        <div className="admin-loading">Cargando propiedades...</div>
-      ) : (
-        <div className="admin-cards">
-          {items.length === 0 ? (
-            <div className="admin-empty">No hay propiedades. Creá la primera.</div>
-          ) : null}
-          {items.map((item) => {
-            const thumb = item.images?.[0]?.url;
-            return (
-              <div key={item.id} className="admin-card">
-                <div className="admin-card-thumb">
-                  {thumb ? (
-                    <img src={thumb} alt={item.title} />
-                  ) : (
-                    <div className="admin-card-no-img">
-                      <i className="ph ph-image" />
-                    </div>
-                  )}
-                </div>
-                <div className="admin-card-body">
-                  <div className="admin-card-info">
-                    <p className="admin-card-title">{item.title}</p>
-                    <div className="admin-card-badges">
-                      <span className="badge badge-cat">
-                        {CATEGORY_LABELS[item.category] ?? item.category}
-                      </span>
-                      <span className="badge badge-status">
-                        {STATUS_LABELS[item.operationStatus] ?? item.operationStatus}
-                      </span>
-                      {!item.published && (
-                        <span className="badge badge-unpublished">Oculta</span>
-                      )}
-                    </div>
-                    <p className="admin-card-location">
-                      {[item.neighborhood, item.city].filter(Boolean).join(", ")}
-                    </p>
-                  </div>
-                  <div className="admin-card-actions">
-                    <button
-                      type="button"
-                      className="admin-action-btn"
-                      title="Editar"
-                      onClick={() => startEdit(item)}
-                    >
-                      <i className="ph ph-pencil-simple" />
-                      Editar
-                    </button>
-                    <button
-                      type="button"
-                      className="admin-action-btn"
-                      title="Ver QR"
-                      onClick={() => setQrItem(item)}
-                    >
-                      <i className="ph ph-qr-code" />
-                      QR
-                    </button>
-                    <button
-                      type="button"
-                      className="admin-action-btn admin-action-danger"
-                      title="Eliminar"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <i className="ph ph-trash" />
-                      Eliminar
-                    </button>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </main>
-
-    {showFormModal ? (
-      <div className="form-modal-overlay" onClick={closeFormModal}>
-        <div className="form-modal" onClick={(e) => e.stopPropagation()}>
-          <div className="form-modal-header">
-            <h2>{selectedId ? "Editar propiedad" : "Nueva propiedad"}</h2>
-            <div className="form-modal-header-actions">
-              {debugMode ? (
-                <button
-                  type="button"
-                  className="btn-ghost"
-                  onClick={() => setForm(getDebugPropertyDraft())}
-                >
-                  Prefill debug
-                </button>
-              ) : null}
-              <button type="button" className="form-modal-close" onClick={closeFormModal} aria-label="Cerrar">
-                X
-              </button>
-            </div>
+      <section className="admin-grid">
+        <article className="admin-list">
+          <div className="admin-list-head">
+            <h2>Propiedades</h2>
+            <button className="btn-secondary" onClick={startCreate} type="button">
+              Nueva
+            </button>
           </div>
-
-          <div className="form-modal-body">
-            <form className="admin-form" onSubmit={handleSubmit}>
-              <label>
-                Titulo
-                <input
-                  value={form.title}
-                  onChange={(event) => updateField("title", event.target.value)}
-                  required
-                />
-              </label>
-              <label>
-                Descripcion
-                <textarea
-                  value={form.description}
-                  onChange={(event) => updateField("description", event.target.value)}
-                  rows={4}
-                  required
-                />
-              </label>
-              <div className="inline-fields">
-                <label>
-                  Categoria
-                  <select
-                    value={form.category}
-                    onChange={(event) => updateField("category", event.target.value)}
-                  >
-                    {categories.map((item) => (
-                      <option key={item.value} value={item.value}>
-                        {item.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label>
-                  Estado
-                  <select
-                    value={form.operationStatus}
-                    onChange={(event) =>
-                      updateField("operationStatus", event.target.value)
-                    }
-                  >
-                    {operationStatuses.map((item) => (
-                      <option key={item.value} value={item.value}>
-                        {item.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              </div>
-              <div className="inline-fields">
-                <label>
-                  Precio
-                  <input
-                    type="number"
-                    value={form.price}
-                    onChange={(event) => updateField("price", event.target.value)}
-                    min="0"
-                    required
-                  />
-                </label>
-                <label>
-                  Moneda
-                  <select
-                    value={form.currency}
-                    onChange={(event) => updateField("currency", event.target.value)}
-                  >
-                    <option value="USD">USD</option>
-                    <option value="ARS">ARS</option>
-                  </select>
-                </label>
-              </div>
-              <div className="inline-fields">
-                <label>
-                  m2 total
-                  <input
-                    type="number"
-                    value={form.totalM2}
-                    onChange={(event) => updateField("totalM2", event.target.value)}
-                    min="0"
-                    required
-                  />
-                </label>
-                <label>
-                  m2 cubiertos
-                  <input
-                    type="number"
-                    value={form.coveredM2}
-                    onChange={(event) => updateField("coveredM2", event.target.value)}
-                    min="0"
-                    required
-                  />
-                </label>
-              </div>
-              <div className="inline-fields">
-                <label>
-                  Ambientes
-                  <input
-                    type="number"
-                    value={form.rooms}
-                    onChange={(event) => updateField("rooms", event.target.value)}
-                    min="0"
-                    required
-                  />
-                </label>
-                <label>
-                  Baños
-                  <input
-                    type="number"
-                    value={form.bathrooms}
-                    onChange={(event) => updateField("bathrooms", event.target.value)}
-                    min="0"
-                    required
-                  />
-                </label>
-                <label>
-                  Cocheras
-                  <input
-                    type="number"
-                    value={form.garageSpots}
-                    onChange={(event) => updateField("garageSpots", event.target.value)}
-                    min="0"
-                    required
-                  />
-                </label>
-              </div>
-              <label>
-                Dirección
-                <input
-                  value={form.address}
-                  onChange={(event) => updateField("address", event.target.value)}
-                  required
-                />
-              </label>
-              <div className="inline-fields">
-                <label>
-                  Barrio
-                  <input
-                    value={form.neighborhood}
-                    onChange={(event) =>
-                      updateField("neighborhood", event.target.value)
-                    }
-                    required
-                  />
-                </label>
-                <label>
-                  Ciudad
-                  <input
-                    value={form.city}
-                    onChange={(event) => updateField("city", event.target.value)}
-                    required
-                  />
-                </label>
-                <label>
-                  Sucursal
-                  <input
-                    value={form.branch}
-                    onChange={(event) => updateField("branch", event.target.value)}
-                    required
-                  />
-                </label>
-              </div>
-
-              <label className="toggle-field">
-                <input
-                  type="checkbox"
-                  checked={form.published}
-                  onChange={(event) => updateField("published", event.target.checked)}
-                />
-                Publicada
-              </label>
-
-              <div className="images-box">
-                <h3>Fotos</h3>
-                <div className="inline-fields">
-                  <input
-                    value={imageUrl}
-                    placeholder="https://..."
-                    onChange={(event) => setImageUrl(event.target.value)}
-                  />
-                  <button type="button" onClick={addImageFromUrl}>
-                    Agregar URL
+          {loadingList ? <p>Cargando...</p> : null}
+          <div className="admin-list-items">
+            {items.map((item) => (
+              <div key={item.id} className="admin-list-item">
+                <div>
+                  <strong>{item.title}</strong>
+                  <p>
+                    {item.category} · {item.operationStatus}
+                  </p>
+                </div>
+                <div className="admin-list-actions">
+                  <button type="button" onClick={() => startEdit(item)}>
+                    Editar
                   </button>
-                  <label className="upload-button">
-                    {uploading ? "Subiendo..." : "Subir archivo"}
-                    <input
-                      type="file"
-                      onChange={uploadFile}
-                      accept="image/png,image/jpeg,image/webp"
-                    />
-                  </label>
-                </div>
-                <p className="field-help">
-                  Acepta PNG, JPG y WEBP de hasta {IMAGE_UPLOAD_MAX_MB} MB.
-                </p>
-                <div className="image-preview-grid">
-                  {form.images.map((image, index) => (
-                    <div key={`${image.url}-${index}`} className="image-preview-item">
-                      <img src={image.url} alt={image.alt || "Imagen"} />
-                      <button type="button" onClick={() => removeImage(index)}>
-                        Quitar
-                      </button>
-                    </div>
-                  ))}
+                  <button type="button" onClick={() => setQrItem(item)}>
+                    QR
+                  </button>
+                  <button type="button" onClick={() => handleDelete(item.id)}>
+                    Eliminar
+                  </button>
                 </div>
               </div>
-
-              {error ? <p className="error-text">{error}</p> : null}
-              <div className="form-modal-footer">
-                <button type="button" className="btn-secondary" onClick={closeFormModal}>
-                  Cancelar
-                </button>
-                <button type="submit" className="btn-main" disabled={saving}>
-                  {saving ? "Guardando..." : "Guardar"}
-                </button>
-              </div>
-            </form>
+            ))}
           </div>
-        </div>
-      </div>
-    ) : null}
+        </article>
+
+        <article className="admin-form-wrap">
+          <div className="admin-list-head">
+            <h2>{selectedId ? "Editar propiedad" : "Crear propiedad"}</h2>
+            {debugMode ? (
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => setForm(getDebugPropertyDraft())}
+              >
+                Prefill debug
+              </button>
+            ) : null}
+          </div>
+
+          <form className="admin-form" onSubmit={handleSubmit}>
+            <label>
+              Titulo
+              <input
+                value={form.title}
+                onChange={(event) => updateField("title", event.target.value)}
+                required
+              />
+            </label>
+            <label>
+              Descripcion
+              <textarea
+                value={form.description}
+                onChange={(event) => updateField("description", event.target.value)}
+                rows={4}
+                required
+              />
+            </label>
+            <div className="inline-fields">
+              <label>
+                Categoria
+                <select
+                  value={form.category}
+                  onChange={(event) => updateField("category", event.target.value)}
+                >
+                  {categories.map((item) => (
+                    <option key={item.value} value={item.value}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Estado
+                <select
+                  value={form.operationStatus}
+                  onChange={(event) =>
+                    updateField("operationStatus", event.target.value)
+                  }
+                >
+                  {operationStatuses.map((item) => (
+                    <option key={item.value} value={item.value}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <div className="inline-fields">
+              <label>
+                Precio
+                <input
+                  type="number"
+                  value={form.price}
+                  onChange={(event) => updateField("price", event.target.value)}
+                  min="0"
+                  required
+                />
+              </label>
+              <label>
+                Moneda
+                <select
+                  value={form.currency}
+                  onChange={(event) => updateField("currency", event.target.value)}
+                >
+                  <option value="USD">USD</option>
+                  <option value="ARS">ARS</option>
+                </select>
+              </label>
+            </div>
+            <div className="inline-fields">
+              <label>
+                m2 total
+                <input
+                  type="number"
+                  value={form.totalM2}
+                  onChange={(event) => updateField("totalM2", event.target.value)}
+                  min="0"
+                  required
+                />
+              </label>
+              <label>
+                m2 cubiertos
+                <input
+                  type="number"
+                  value={form.coveredM2}
+                  onChange={(event) => updateField("coveredM2", event.target.value)}
+                  min="0"
+                  required
+                />
+              </label>
+            </div>
+            <div className="inline-fields">
+              <label>
+                Ambientes
+                <input
+                  type="number"
+                  value={form.rooms}
+                  onChange={(event) => updateField("rooms", event.target.value)}
+                  min="0"
+                  required
+                />
+              </label>
+              <label>
+                Banos
+                <input
+                  type="number"
+                  value={form.bathrooms}
+                  onChange={(event) => updateField("bathrooms", event.target.value)}
+                  min="0"
+                  required
+                />
+              </label>
+              <label>
+                Cocheras
+                <input
+                  type="number"
+                  value={form.garageSpots}
+                  onChange={(event) => updateField("garageSpots", event.target.value)}
+                  min="0"
+                  required
+                />
+              </label>
+            </div>
+            <label>
+              Direccion
+              <input
+                value={form.address}
+                onChange={(event) => updateField("address", event.target.value)}
+                required
+              />
+            </label>
+            <div className="inline-fields">
+              <label>
+                Barrio
+                <input
+                  value={form.neighborhood}
+                  onChange={(event) =>
+                    updateField("neighborhood", event.target.value)
+                  }
+                  required
+                />
+              </label>
+              <label>
+                Ciudad
+                <input
+                  value={form.city}
+                  onChange={(event) => updateField("city", event.target.value)}
+                  required
+                />
+              </label>
+              <label>
+                Sucursal
+                <input
+                  value={form.branch}
+                  onChange={(event) => updateField("branch", event.target.value)}
+                  required
+                />
+              </label>
+            </div>
+
+            <label className="toggle-field">
+              <input
+                type="checkbox"
+                checked={form.published}
+                onChange={(event) => updateField("published", event.target.checked)}
+              />
+              Publicada
+            </label>
+
+            <div className="images-box">
+              <h3>Fotos</h3>
+              <div className="inline-fields">
+                <input
+                  value={imageUrl}
+                  placeholder="https://..."
+                  onChange={(event) => setImageUrl(event.target.value)}
+                />
+                <button type="button" onClick={addImageFromUrl}>
+                  Agregar URL
+                </button>
+                <label className="upload-button">
+                  {uploading ? "Subiendo..." : "Subir archivo"}
+                  <input
+                    type="file"
+                    onChange={uploadFile}
+                    accept="image/png,image/jpeg,image/webp"
+                  />
+                </label>
+              </div>
+              <p className="field-help">
+                Acepta PNG, JPG y WEBP de hasta {IMAGE_UPLOAD_MAX_MB} MB.
+              </p>
+              <div className="image-preview-grid">
+                {form.images.map((image, index) => (
+                  <div key={`${image.url}-${index}`} className="image-preview-item">
+                    <img src={image.url} alt={image.alt || "Imagen"} />
+                    <button type="button" onClick={() => removeImage(index)}>
+                      Quitar
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {error ? <p className="error-text">{error}</p> : null}
+            <button type="submit" className="btn-main" disabled={saving}>
+              {saving ? "Guardando..." : "Guardar"}
+            </button>
+          </form>
+        </article>
+      </section>
+    </main>
 
     {qrItem ? (
       <div className="qr-modal-overlay" onClick={() => setQrItem(null)}>

@@ -24,6 +24,8 @@ services:
         value: admin123
       - key: DEBUG_MODE
         value: "false"
+      - key: SITE_URL
+        value: https://lauragutierrezpropiedades.com.ar
       - key: RUN_SEED_ON_DEPLOY
         value: "true"
 

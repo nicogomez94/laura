@@ -65,12 +65,12 @@ router.get("/:slug/qr", async (req, res) => {
     return res.status(404).json({ message: "Propiedad no encontrada." });
   }
 
-  const rawClientOrigin = process.env.CLIENT_ORIGIN || "http://localhost:5173";
-  const clientOrigin = /^https?:\/\//i.test(rawClientOrigin)
-    ? rawClientOrigin
-    : `https://${rawClientOrigin}`;
+  const rawSiteUrl = process.env.SITE_URL || process.env.CLIENT_ORIGIN || "http://localhost:5173";
+  const siteUrl = /^https?:\/\//i.test(rawSiteUrl)
+    ? rawSiteUrl
+    : `https://${rawSiteUrl}`;
 
-  const propertyUrl = `${clientOrigin}/propiedades/ficha/${property.slug}`;
+  const propertyUrl = `${siteUrl}/propiedades/ficha/${property.slug}`;
   const qrBuffer = await QRCode.toBuffer(propertyUrl, { type: "png", width: 400 });
 
   res.set("Content-Type", "image/png");
