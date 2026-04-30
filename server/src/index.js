@@ -19,6 +19,11 @@ const clientOrigin = /^https?:\/\//i.test(rawClientOrigin)
   ? rawClientOrigin
   : `https://${rawClientOrigin}`;
 
+const allowedOrigins = new Set([clientOrigin]);
+if (process.env.SITE_URL) {
+  allowedOrigins.add(process.env.SITE_URL.replace(/\/+$/, ""));
+}
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const uploadsDir = path.resolve(__dirname, "..", "uploads");
@@ -28,7 +33,13 @@ if (!fs.existsSync(uploadsDir)) {
 
 app.use(
   cors({
-    origin: clientOrigin
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.has(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS: origen no permitido: ${origin}`));
+      }
+    }
   })
 );
 app.use(express.json({ limit: "4mb" }));
