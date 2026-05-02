@@ -1,6 +1,8 @@
 import { getToken, clearSession } from "./auth";
 
-const rawApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim();
+const rawApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim() || (
+  import.meta.env.DEV ? "http://localhost:3001" : ""
+);
 const API_BASE_URL = rawApiBaseUrl
   ? (
       /^https?:\/\//i.test(rawApiBaseUrl)
@@ -61,6 +63,11 @@ async function request(path, options = {}) {
 
   if (response.status === 204) {
     return null;
+  }
+
+  const contentType = response.headers.get("content-type") || "";
+  if (!contentType.includes("application/json")) {
+    throw new Error("La API no devolvio JSON. Revisá que el backend local este corriendo en http://localhost:3001.");
   }
 
   return response.json();
