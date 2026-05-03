@@ -1126,6 +1126,46 @@ a {
   color: var(--text-main);
 }
 
+.detail-qr {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.detail-qr-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.detail-qr-image {
+  width: min(220px, 100%);
+  aspect-ratio: 1;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.detail-qr-hint {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.detail-qr-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 14px;
+  margin-top: 0;
+  border: 1px solid #44506a;
+  border-radius: 999px;
+}
+
 .detail-description {
   background: var(--bg-panel);
   border: 1px solid var(--line);

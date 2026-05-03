@@ -61,6 +61,7 @@ export default function PropertyDetailPage() {
 
   const gallery = useMemo(() => property?.images || [], [property?.images]);
   const mainImage = gallery[activeImage] || null;
+  const qrUrl = property ? `${API_BASE_URL}/api/properties/${property.slug}/qr` : "";
 
   if (loading) {
     return (
@@ -134,6 +135,19 @@ export default function PropertyDetailPage() {
             <p><strong>{property.rooms}</strong> ambientes</p>
             <p><strong>{property.bathrooms}</strong> banos</p>
             <p><strong>{property.garageSpots}</strong> cocheras</p>
+          </div>
+
+          <div className="detail-qr">
+            <p className="detail-qr-title">QR de esta propiedad</p>
+            <img
+              src={qrUrl}
+              alt={`Codigo QR de ${property.title}`}
+              className="detail-qr-image"
+            />
+            <p className="detail-qr-hint">Escanealo para abrir esta ficha desde el celular.</p>
+            <a href={qrUrl} target="_blank" rel="noreferrer" className="detail-qr-link">
+              Abrir QR
+            </a>
           </div>
         </aside>
       </section>
