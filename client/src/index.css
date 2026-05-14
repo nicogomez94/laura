@@ -1966,6 +1966,11 @@ select {
     gap: 4px;
   }
 
+  .admin-action-btn {
+    justify-content: center;
+    min-width: 104px;
+  }
+
   .detail-grid {
     grid-template-columns: 1fr;
   }
@@ -2015,6 +2020,144 @@ select {
 
   .detail-specs {
     grid-template-columns: 1fr;
+  }
+
+  .admin-page {
+    width: min(100% - 28px, 680px);
+    padding-top: 24px;
+    padding-bottom: 46px;
+  }
+
+  .admin-header {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+  }
+
+  .admin-header-left {
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .admin-title {
+    font-size: clamp(1.55rem, 8vw, 2.05rem);
+    line-height: 1.12;
+  }
+
+  .admin-count {
+    flex-shrink: 0;
+    margin-top: 3px;
+    padding: 5px 11px;
+  }
+
+  .admin-header-actions {
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .admin-user {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .admin-header-actions .btn-secondary {
+    flex-shrink: 0;
+    padding: 10px 14px;
+  }
+
+  .admin-toolbar {
+    margin-bottom: 16px;
+  }
+
+  .admin-new-btn {
+    justify-content: center;
+    width: 100%;
+    min-height: 52px;
+  }
+
+  .admin-cards {
+    gap: 12px;
+  }
+
+  .admin-card {
+    display: grid;
+    grid-template-columns: 104px minmax(0, 1fr);
+    min-height: 148px;
+    overflow: hidden;
+  }
+
+  .admin-card-thumb {
+    width: auto;
+    min-height: 100%;
+  }
+
+  .admin-card-no-img {
+    min-height: 148px;
+  }
+
+  .admin-card-body {
+    align-items: stretch;
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+    padding: 13px;
+  }
+
+  .admin-card-info {
+    gap: 7px;
+  }
+
+  .admin-card-title {
+    display: -webkit-box;
+    font-size: 0.95rem;
+    line-height: 1.25;
+    max-height: 2.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .admin-card-badges {
+    gap: 5px;
+  }
+
+  .badge {
+    font-size: 0.66rem;
+    letter-spacing: 0.2px;
+    padding: 3px 7px;
+  }
+
+  .admin-card-location {
+    font-size: 0.78rem;
+    line-height: 1.3;
+  }
+
+  .admin-card-actions {
+    display: grid;
+    flex-direction: initial;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    width: 100%;
+  }
+
+  .admin-action-btn {
+    gap: 4px;
+    justify-content: center;
+    min-height: 38px;
+    min-width: 0;
+    padding: 7px 4px;
+    width: 100%;
+  }
+
+  .admin-action-btn i {
+    font-size: 0.95rem;
   }
 
   .whatsapp-float {
