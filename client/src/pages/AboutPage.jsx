@@ -1,7 +1,7 @@
 const METRICS = [
-  { value: "+25", label: "Años de trayectoria" },
-  { value: "3.500", label: "Operaciones cerradas" },
-  { value: "92%", label: "Propiedades vendidas en menos de 90 días" }
+  { value: "4", label: "Años de trayectoria" },
+  { value: "56", label: "Operaciones cerradas" },
+  { value: "0", label: "Propiedades vendidas en menos de 90 días" }
 ];
 
 const VALUES = [
@@ -11,7 +11,7 @@ const VALUES = [
   },
   {
     title: "Conocimiento real del mercado",
-    text: "Más de dos décadas operando en CABA y zona norte nos dan una lectura afinada de precios, zonas y oportunidades."
+    text: "Nuestra experiencia operando en CABA nos da una lectura afinada de precios, zonas y oportunidades."
   },
   {
     title: "Acompañamiento hasta el final",
@@ -24,7 +24,7 @@ export default function AboutPage() {
     <main className="page container info-page">
       <header className="info-hero">
         <p className="section-kicker">NOSOTROS</p>
-        <h1 className="page-title">Más de 25 años haciendo lo que nos apasiona</h1>
+        <h1 className="page-title">4 años haciendo lo que nos apasiona</h1>
         <p className="page-text">
           Laura fundó esta inmobiliaria con una convicción simple: que comprar,
           vender o alquilar una propiedad debería ser una experiencia clara,
@@ -45,11 +45,10 @@ export default function AboutPage() {
       <section className="info-section">
         <h2 className="section-title">Quiénes somos</h2>
         <p className="page-text">
-          Somos un equipo de asesores inmobiliarios con base en Recoleta y
-          presencia en Belgrano y Nordelta. Laura lidera el equipo desde hace
-          más de dos décadas: empezó gestionando alquileres en el barrio y fue
-          creciendo junto a sus clientes, muchos de los cuales hoy vuelven para
-          su segunda o tercera operación.
+          Somos un equipo de asesores inmobiliarios con base en Almagro,
+          Balvanera y Palermo, con presencia en Belgrano. Laura lidera el
+          equipo desde hace años y fue creciendo junto a sus clientes, muchos
+          de los cuales hoy vuelven para su segunda o tercera operación.
         </p>
         <p className="page-text" style={{ marginTop: "1rem" }}>
           Lo que nos diferencia no es el tamaño, sino la dedicación. Cada

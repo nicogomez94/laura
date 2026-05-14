@@ -15,14 +15,42 @@ dotenv.config();
 const app = express();
 const port = Number(process.env.PORT || 3000);
 const rawClientOrigin = process.env.CLIENT_ORIGIN || "http://localhost:5173";
-const clientOrigin = /^https?:\/\//i.test(rawClientOrigin)
-  ? rawClientOrigin
-  : `https://${rawClientOrigin}`;
 
-const allowedOrigins = new Set([clientOrigin]);
-if (process.env.SITE_URL) {
-  allowedOrigins.add(process.env.SITE_URL.replace(/\/+$/, ""));
+function normalizeOrigin(value) {
+  if (!value) {
+    return null;
+  }
+
+  const withProtocol = /^https?:\/\//i.test(value) ? value : `https://${value}`;
+  try {
+    return new URL(withProtocol).origin;
+  } catch {
+    return null;
+  }
 }
+
+function addAllowedOrigin(value, origins) {
+  const origin = normalizeOrigin(value);
+  if (!origin) {
+    return;
+  }
+
+  origins.add(origin);
+
+  const url = new URL(origin);
+  const hostname = url.hostname;
+  if (hostname.startsWith("www.")) {
+    url.hostname = hostname.slice(4);
+    origins.add(url.origin);
+  } else if (!hostname.includes("localhost")) {
+    url.hostname = `www.${hostname}`;
+    origins.add(url.origin);
+  }
+}
+
+const allowedOrigins = new Set();
+addAllowedOrigin(rawClientOrigin, allowedOrigins);
+addAllowedOrigin(process.env.SITE_URL, allowedOrigins);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

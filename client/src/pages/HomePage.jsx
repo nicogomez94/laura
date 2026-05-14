@@ -8,10 +8,34 @@ import {
 
 const TABS = ["Comprar", "Alquilar", "Tasación"];
 const COLLECTIONS = [
-  { title: "Casas\nen Venta", to: "/propiedades/en-venta", cardClass: "card-1", icon: "fa-house" },
-  { title: "Departamentos\nen Alquiler", to: "/propiedades/en-alquiler", cardClass: "card-2", icon: "fa-key" },
-  { title: "Locales\nComerciales", to: "/propiedades/en-venta", cardClass: "card-3", icon: "fa-shop" },
-  { title: "Lotes y\nTerrenos", to: "/propiedades/en-venta", cardClass: "card-4", icon: "fa-ruler-combined" }
+  {
+    title: "Propiedades\nen Venta",
+    subtitle: "Departamentos / Oficinas / Casas",
+    to: "/propiedades/en-venta",
+    cardClass: "card-1",
+    icon: "fa-house"
+  },
+  {
+    title: "Propiedades\nen Alquiler",
+    subtitle: "Departamentos / Oficinas / Casas",
+    to: "/propiedades/en-alquiler",
+    cardClass: "card-2",
+    icon: "fa-key"
+  },
+  {
+    title: "Locales\nComerciales",
+    subtitle: "Locales / Oficinas",
+    to: "/propiedades/en-venta",
+    cardClass: "card-3",
+    icon: "fa-shop"
+  },
+  {
+    title: "Lotes y\nTerrenos",
+    subtitle: "Lotes / Terrenos",
+    to: "/propiedades/en-venta",
+    cardClass: "card-4",
+    icon: "fa-ruler-combined"
+  }
 ];
 const PILLARS = [
   {
@@ -63,7 +87,7 @@ function HeroContent() {
 
   return (
     <section className="hero-content container">
-      <p className="hero-kicker">+3.500 operaciones de compra, venta y alquiler</p>
+      <p className="hero-kicker">56 operaciones de compra, venta y alquiler</p>
       <h1>
         Encontrá la propiedad
         <br />
@@ -307,6 +331,7 @@ export default function HomePage() {
                   <i className={`fa-solid ${collection.icon}`} />
                 </span>
                 <h3>{collection.title.split("\n")[0]}<br />{collection.title.split("\n")[1]}</h3>
+                <p>{collection.subtitle}</p>
                 <Link to={collection.to}>VER MAS</Link>
               </div>
             </article>

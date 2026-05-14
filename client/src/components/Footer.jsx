@@ -8,7 +8,7 @@ export default function Footer() {
           <p className="footer-brand">LGPROPIEDADES</p>
           <p className="footer-text">
             Servicios inmobiliarios para compra, venta, alquiler y tasaciones en
-            CABA y zona norte.
+            CABA.
           </p>
         </div>
 
