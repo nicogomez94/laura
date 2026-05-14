@@ -40,6 +40,7 @@ export default function PropertyDetailPage() {
   const [activeImage, setActiveImage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [shareStatus, setShareStatus] = useState("");
 
   useEffect(() => {
     const run = async () => {
@@ -61,7 +62,49 @@ export default function PropertyDetailPage() {
 
   const gallery = useMemo(() => property?.images || [], [property?.images]);
   const mainImage = gallery[activeImage] || null;
+  const hasGalleryControls = gallery.length > 1;
   const qrUrl = property ? `${API_BASE_URL}/api/properties/${property.slug}/qr` : "";
+  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+
+  useEffect(() => {
+    if (!shareStatus) {
+      return undefined;
+    }
+
+    const timeout = window.setTimeout(() => setShareStatus(""), 2200);
+    return () => window.clearTimeout(timeout);
+  }, [shareStatus]);
+
+  const handleShare = async () => {
+    const shareData = {
+      title: property.title,
+      text: `Mira esta propiedad: ${property.title}`,
+      url: shareUrl
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        setShareStatus("Listo para compartir.");
+        return;
+      }
+
+      await navigator.clipboard.writeText(shareUrl);
+      setShareStatus("Link copiado.");
+    } catch (err) {
+      if (err.name !== "AbortError") {
+        setShareStatus("No se pudo compartir.");
+      }
+    }
+  };
+
+  const showPreviousImage = () => {
+    setActiveImage((current) => (current === 0 ? gallery.length - 1 : current - 1));
+  };
+
+  const showNextImage = () => {
+    setActiveImage((current) => (current === gallery.length - 1 ? 0 : current + 1));
+  };
 
   if (loading) {
     return (
@@ -90,17 +133,43 @@ export default function PropertyDetailPage() {
 
       <section className="detail-grid">
         <div className="detail-gallery">
-          {mainImage ? (
-            <img
-              className="detail-main-image"
-              src={imageUrl(mainImage)}
-              alt={mainImage.alt || property.title}
-            />
-          ) : (
-            <div className="detail-main-image img-placeholder">Sin imagen</div>
-          )}
+          <div className="detail-main-image-frame">
+            {mainImage ? (
+              <img
+                className="detail-main-image"
+                src={imageUrl(mainImage)}
+                alt={mainImage.alt || property.title}
+              />
+            ) : (
+              <div className="detail-main-image img-placeholder">Sin imagen</div>
+            )}
 
-          {gallery.length > 1 ? (
+            {hasGalleryControls ? (
+              <>
+                <button
+                  type="button"
+                  className="detail-gallery-control detail-gallery-control-prev"
+                  onClick={showPreviousImage}
+                  aria-label="Ver imagen anterior"
+                >
+                  <i className="fa-solid fa-chevron-left" aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  className="detail-gallery-control detail-gallery-control-next"
+                  onClick={showNextImage}
+                  aria-label="Ver imagen siguiente"
+                >
+                  <i className="fa-solid fa-chevron-right" aria-hidden="true" />
+                </button>
+                <span className="detail-gallery-count">
+                  {activeImage + 1} / {gallery.length}
+                </span>
+              </>
+            ) : null}
+          </div>
+
+          {hasGalleryControls ? (
             <div className="detail-thumbs">
               {gallery.map((image, index) => (
                 <button
@@ -122,6 +191,14 @@ export default function PropertyDetailPage() {
           <p className="detail-location">
             {property.address}, {property.neighborhood}, {property.city}
           </p>
+
+          <div className="detail-actions">
+            <button type="button" className="detail-share-button" onClick={handleShare}>
+              <i className="fa-solid fa-share-nodes" aria-hidden="true" />
+              Compartir
+            </button>
+            {shareStatus ? <span className="detail-share-status">{shareStatus}</span> : null}
+          </div>
 
           <div className="detail-tags">
             <span>{property.category}</span>

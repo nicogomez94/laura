@@ -52,6 +52,10 @@ const CATEGORY_LABELS = {
   TERRENOS: "Terreno"
 };
 
+function normalizeImageOrder(images) {
+  return images.map((image, index) => ({ ...image, sortOrder: index }));
+}
+
 export default function AdminDashboardPage() {
   const navigate = useNavigate();
   const debugMode = String(import.meta.env.VITE_DEBUG_MODE).toLowerCase() === "true";
@@ -65,6 +69,7 @@ export default function AdminDashboardPage() {
   const [error, setError] = useState("");
   const [qrItem, setQrItem] = useState(null);
   const [showFormModal, setShowFormModal] = useState(false);
+  const [draggedImageIndex, setDraggedImageIndex] = useState(null);
 
   const user = useMemo(() => getUser(), []);
 
@@ -132,6 +137,17 @@ export default function AdminDashboardPage() {
     setSelectedId(null);
     setForm(emptyProperty);
     setError("");
+    setDraggedImageIndex(null);
+  }
+
+  function requestCloseFormModal() {
+    const shouldClose = window.confirm(
+      "¿Estás seguro de que querés cerrarlo? Se va a borrar todo lo cargado."
+    );
+
+    if (shouldClose) {
+      closeFormModal();
+    }
   }
 
   async function handleSubmit(event) {
@@ -174,14 +190,14 @@ export default function AdminDashboardPage() {
     }
     setForm((current) => ({
       ...current,
-      images: [
+      images: normalizeImageOrder([
         ...current.images,
         {
           url: imageUrl.trim(),
           alt: current.title || "Foto propiedad",
           sortOrder: current.images.length
         }
-      ]
+      ])
     }));
     setImageUrl("");
   }
@@ -199,14 +215,14 @@ export default function AdminDashboardPage() {
       const normalizedUrl = `${API_BASE_URL}${result.url}`;
       setForm((current) => ({
         ...current,
-        images: [
+        images: normalizeImageOrder([
           ...current.images,
           {
             url: normalizedUrl,
             alt: current.title || file.name,
             sortOrder: current.images.length
           }
-        ]
+        ])
       }));
     } catch (err) {
       setError(err.message);
@@ -219,10 +235,49 @@ export default function AdminDashboardPage() {
   function removeImage(indexToRemove) {
     setForm((current) => ({
       ...current,
-      images: current.images
-        .filter((_, index) => index !== indexToRemove)
-        .map((image, index) => ({ ...image, sortOrder: index }))
+      images: normalizeImageOrder(
+        current.images.filter((_, index) => index !== indexToRemove)
+      )
     }));
+  }
+
+  function reorderImages(fromIndex, toIndex) {
+    if (fromIndex === toIndex) {
+      return;
+    }
+
+    setForm((current) => {
+      if (
+        fromIndex < 0 ||
+        fromIndex >= current.images.length ||
+        toIndex < 0 ||
+        toIndex >= current.images.length
+      ) {
+        return current;
+      }
+
+      const nextImages = [...current.images];
+      const [movedImage] = nextImages.splice(fromIndex, 1);
+      nextImages.splice(toIndex, 0, movedImage);
+
+      return {
+        ...current,
+        images: normalizeImageOrder(nextImages)
+      };
+    });
+  }
+
+  function handleImageDrop(event, dropIndex) {
+    event.preventDefault();
+    const draggedData = event.dataTransfer.getData("text/plain");
+    const fromIndex = draggedData === "" ? null : Number(draggedData);
+    const resolvedIndex = Number.isInteger(fromIndex) ? fromIndex : draggedImageIndex;
+
+    if (Number.isInteger(resolvedIndex)) {
+      reorderImages(resolvedIndex, dropIndex);
+    }
+
+    setDraggedImageIndex(null);
   }
 
   return (
@@ -333,8 +388,8 @@ export default function AdminDashboardPage() {
     </main>
 
     {showFormModal ? (
-      <div className="form-modal-overlay" onClick={closeFormModal}>
-        <div className="form-modal" onClick={(e) => e.stopPropagation()}>
+      <div className="form-modal-overlay">
+        <div className="form-modal" role="dialog" aria-modal="true">
           <div className="form-modal-header">
             <h2>{selectedId ? "Editar propiedad" : "Nueva propiedad"}</h2>
             <div className="form-modal-header-actions">
@@ -347,7 +402,12 @@ export default function AdminDashboardPage() {
                   Prefill debug
                 </button>
               ) : null}
-              <button type="button" className="form-modal-close" onClick={closeFormModal} aria-label="Cerrar">
+              <button
+                type="button"
+                className="form-modal-close"
+                onClick={requestCloseFormModal}
+                aria-label="Cerrar"
+              >
                 X
               </button>
             </div>
@@ -545,15 +605,59 @@ export default function AdminDashboardPage() {
                   </label>
                 </div>
                 <p className="field-help">
-                  Acepta PNG, JPG y WEBP de hasta {IMAGE_UPLOAD_MAX_MB} MB.
+                  Acepta PNG, JPG y WEBP de hasta {IMAGE_UPLOAD_MAX_MB} MB. La primera foto
+                  se muestra como destacada.
                 </p>
                 <div className="image-preview-grid">
                   {form.images.map((image, index) => (
-                    <div key={`${image.url}-${index}`} className="image-preview-item">
+                    <div
+                      key={`${image.url}-${index}`}
+                      className={`image-preview-item${
+                        draggedImageIndex === index ? " dragging" : ""
+                      }${index === 0 ? " featured" : ""}`}
+                      draggable
+                      onDragStart={(event) => {
+                        event.dataTransfer.effectAllowed = "move";
+                        event.dataTransfer.setData("text/plain", String(index));
+                        setDraggedImageIndex(index);
+                      }}
+                      onDragOver={(event) => event.preventDefault()}
+                      onDrop={(event) => handleImageDrop(event, index)}
+                      onDragEnd={() => setDraggedImageIndex(null)}
+                    >
+                      {index === 0 ? (
+                        <span className="image-featured-badge">Destacada</span>
+                      ) : null}
                       <img src={image.url} alt={image.alt || "Imagen"} />
-                      <button type="button" onClick={() => removeImage(index)}>
-                        Quitar
-                      </button>
+                      <div className="image-preview-actions">
+                        <button
+                          type="button"
+                          className="image-order-button"
+                          onClick={() => reorderImages(index, index - 1)}
+                          disabled={index === 0}
+                          aria-label="Mover foto a la izquierda"
+                          title="Mover a la izquierda"
+                        >
+                          <i className="ph ph-arrow-left" aria-hidden="true" />
+                        </button>
+                        <button
+                          type="button"
+                          className="image-order-button"
+                          onClick={() => reorderImages(index, index + 1)}
+                          disabled={index === form.images.length - 1}
+                          aria-label="Mover foto a la derecha"
+                          title="Mover a la derecha"
+                        >
+                          <i className="ph ph-arrow-right" aria-hidden="true" />
+                        </button>
+                        <button
+                          type="button"
+                          className="image-remove-button"
+                          onClick={() => removeImage(index)}
+                        >
+                          Quitar
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -561,9 +665,6 @@ export default function AdminDashboardPage() {
 
               {error ? <p className="error-text">{error}</p> : null}
               <div className="form-modal-footer">
-                <button type="button" className="btn-secondary" onClick={closeFormModal}>
-                  Cancelar
-                </button>
                 <button type="submit" className="btn-main" disabled={saving}>
                   {saving ? "Guardando..." : "Guardar"}
                 </button>
