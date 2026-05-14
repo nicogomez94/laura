@@ -90,17 +90,35 @@ a {
 }
 
 .hero {
+  --hero-media-height: calc(80vh + 128px);
   position: relative;
   isolation: isolate;
+  background: var(--bg-deep);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: var(--hero-media-height);
   background-image: url("/fondo.jpg");
-  background-size: contain;
-  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center top;
+  z-index: 0;
 }
 
 .hero-overlay {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: var(--hero-media-height);
   background: linear-gradient(180deg, rgba(6, 11, 18, 0.75), rgba(10, 17, 28, 0.82));
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* Keep page content out of the hero overlay even when wrapped by .hero layout */
@@ -2009,7 +2027,72 @@ select {
   }
 
   .hero-content {
-    padding-top: 70px;
+    max-width: none;
+    min-height: calc(100svh - 106px);
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 34px;
+    padding-bottom: 88px;
+  }
+
+  .hero {
+    --hero-media-height: 100svh;
+    min-height: 100svh;
+  }
+
+  .hero::before {
+    background-position: center center;
+  }
+
+  .hero-kicker {
+    width: fit-content;
+    max-width: 100%;
+    margin-bottom: 14px;
+    font-size: 0.78rem;
+    line-height: 1.35;
+  }
+
+  .hero-content h1 {
+    font-size: clamp(2.25rem, 11vw, 3rem);
+    line-height: 1.05;
+  }
+
+  .hero-sub {
+    max-width: 32rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+
+  .hero-search {
+    width: 100%;
+    max-width: none;
+    margin-top: 22px;
+  }
+
+  .hero-search-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .hero-search-tab {
+    min-width: 0;
+    padding: 12px 6px;
+    text-align: center;
+  }
+
+  .hero-search-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 12px;
+  }
+
+  .hero-search-btn {
+    grid-column: 1 / -1;
+    min-height: 44px;
+    width: 100%;
   }
 
   .hero-scroll-cue {
