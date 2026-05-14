@@ -638,7 +638,7 @@ export default function AdminDashboardPage() {
                           aria-label="Mover foto a la izquierda"
                           title="Mover a la izquierda"
                         >
-                          <i className="ph ph-arrow-left" aria-hidden="true" />
+                          <i className="fa-solid fa-arrow-left" aria-hidden="true" />
                         </button>
                         <button
                           type="button"
@@ -648,7 +648,7 @@ export default function AdminDashboardPage() {
                           aria-label="Mover foto a la derecha"
                           title="Mover a la derecha"
                         >
-                          <i className="ph ph-arrow-right" aria-hidden="true" />
+                          <i className="fa-solid fa-arrow-right" aria-hidden="true" />
                         </button>
                         <button
                           type="button"

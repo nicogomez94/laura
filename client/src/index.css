@@ -1774,12 +1774,28 @@ select {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 36px;
+  height: 36px;
   padding: 0;
+  border: 1px solid #52617d;
+  border-radius: 4px;
+  background: #111c30;
+  color: #dbe5f4;
+  font-size: 0.86rem;
+  cursor: pointer;
+}
+
+.image-order-button:hover:not(:disabled) {
+  background: #1b2a45;
+  border-color: #d7b06a;
+  color: #ffffff;
 }
 
 .image-order-button:disabled {
   cursor: not-allowed;
   opacity: 0.45;
+  background: #273247;
+  color: #8d99ad;
 }
 
 .image-remove-button {
