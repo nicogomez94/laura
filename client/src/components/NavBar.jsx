@@ -90,7 +90,7 @@ function NavContent({ mobileOpen, setMobileOpen }) {
       <nav className="navbar container">
         <Link to="/" className="brand">
           <img
-            src="/20260318_1121_Image%20Generation_remix_01km0n2052f7sb5py4r7empmw9.png"
+            src="/otrologo.svg"
             alt="LG Propiedades"
             className="brand-logo"
           />

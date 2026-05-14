@@ -203,27 +203,50 @@ export default function AdminDashboardPage() {
   }
 
   async function uploadFile(event) {
-    const file = event.target.files?.[0];
-    if (!file) {
+    const files = Array.from(event.target.files || []);
+    if (files.length === 0) {
       return;
     }
 
     setError("");
     setUploading(true);
     try {
-      const result = await api.uploadImage(file);
-      const normalizedUrl = `${API_BASE_URL}${result.url}`;
-      setForm((current) => ({
-        ...current,
-        images: normalizeImageOrder([
-          ...current.images,
-          {
-            url: normalizedUrl,
-            alt: current.title || file.name,
-            sortOrder: current.images.length
-          }
-        ])
-      }));
+      const uploads = await Promise.allSettled(
+        files.map(async (file) => {
+          const result = await api.uploadImage(file);
+          return {
+            url: `${API_BASE_URL}${result.url}`,
+            alt: file.name
+          };
+        })
+      );
+      const uploadedImages = uploads
+        .filter((upload) => upload.status === "fulfilled")
+        .map((upload) => upload.value);
+
+      if (uploadedImages.length > 0) {
+        setForm((current) => ({
+          ...current,
+          images: normalizeImageOrder([
+            ...current.images,
+            ...uploadedImages.map((image, index) => ({
+              url: image.url,
+              alt: current.title || image.alt,
+              sortOrder: current.images.length + index
+            }))
+          ])
+        }));
+      }
+
+      const failedUploads = uploads.filter((upload) => upload.status === "rejected");
+      if (failedUploads.length > 0) {
+        const firstError = failedUploads[0].reason?.message || "No se pudieron subir algunas imagenes.";
+        setError(
+          failedUploads.length === files.length
+            ? firstError
+            : `${failedUploads.length} imagen(es) no se pudieron subir. ${firstError}`
+        );
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -601,6 +624,7 @@ export default function AdminDashboardPage() {
                       type="file"
                       onChange={uploadFile}
                       accept="image/png,image/jpeg,image/webp"
+                      multiple
                     />
                   </label>
                 </div>
