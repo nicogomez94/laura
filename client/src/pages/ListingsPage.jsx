@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { api, API_BASE_URL } from "../lib/api";
-import { listingFilters } from "../data/menu";
+import { listingFilters, publicationStatusLabels } from "../data/menu";
 
 function formatCurrency(value, currency) {
   return new Intl.NumberFormat("es-AR", {
@@ -65,11 +65,16 @@ export default function ListingsPage() {
 
           return (
             <article key={property.id} className="property-card">
-              {image ? (
-                <img src={imageUrl} alt={image.alt || property.title} />
-              ) : (
-                <div className="img-placeholder">Sin imagen</div>
-              )}
+              <div className="property-card-image">
+                {image ? (
+                  <img src={imageUrl} alt={image.alt || property.title} />
+                ) : (
+                  <div className="img-placeholder">Sin imagen</div>
+                )}
+                <span className={`publication-mark publication-mark-${property.publicationStatus.toLowerCase().replaceAll("_", "-")}`}>
+                  {publicationStatusLabels[property.publicationStatus]}
+                </span>
+              </div>
               <div className="property-card-content">
                 <h3>{property.title}</h3>
                 <p>{property.neighborhood}</p>

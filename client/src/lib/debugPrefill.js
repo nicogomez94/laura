@@ -5,6 +5,7 @@ export function getDebugPropertyDraft() {
       "Unidad reciclada a nuevo con balcon terraza, cocina integrada y excelente luminosidad.",
     category: "PROPIEDADES",
     operationStatus: "EN_VENTA",
+    publicationStatus: "DISPONIBLE",
     price: 245000,
     currency: "USD",
     totalM2: 124,
@@ -16,7 +17,6 @@ export function getDebugPropertyDraft() {
     neighborhood: "Belgrano",
     city: "Buenos Aires",
     branch: "Capital Federal",
-    published: true,
     images: [
       {
         url: "https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&w=1200&q=80",

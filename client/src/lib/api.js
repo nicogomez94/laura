@@ -47,10 +47,17 @@ async function request(path, options = {}) {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...options,
-    headers
-  });
+  let response;
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      ...options,
+      headers
+    });
+  } catch {
+    throw new Error(
+      "No se pudo conectar con el servidor. Revisá que la API esté activa e intentá nuevamente."
+    );
+  }
 
   if (response.status === 401) {
     clearSession();

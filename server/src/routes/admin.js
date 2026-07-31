@@ -47,6 +47,7 @@ function parsePropertyBody(req) {
     description: String(body.description || "").trim(),
     category: body.category,
     operationStatus: body.operationStatus,
+    publicationStatus: body.publicationStatus,
     price: Number(body.price),
     currency: body.currency,
     totalM2: Number(body.totalM2),
@@ -58,7 +59,6 @@ function parsePropertyBody(req) {
     neighborhood: String(body.neighborhood || "").trim(),
     city: String(body.city || "").trim(),
     branch: String(body.branch || "").trim(),
-    published: String(body.published).toLowerCase() !== "false",
     images: parsedImages
   };
 }

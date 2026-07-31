@@ -1,4 +1,9 @@
-import { CATEGORIES, CURRENCIES, OPERATION_STATUSES } from "./constants.js";
+import {
+  CATEGORIES,
+  CURRENCIES,
+  OPERATION_STATUSES,
+  PUBLICATION_STATUSES
+} from "./constants.js";
 
 function isPositiveInteger(value) {
   return Number.isInteger(value) && value >= 0;
@@ -26,6 +31,10 @@ export function validatePropertyPayload(payload) {
 
   if (!OPERATION_STATUSES.includes(payload.operationStatus)) {
     return "Estado de operacion invalido.";
+  }
+
+  if (!PUBLICATION_STATUSES.includes(payload.publicationStatus)) {
+    return "Estado de publicacion invalido.";
   }
 
   if (!CURRENCIES.includes(payload.currency)) {

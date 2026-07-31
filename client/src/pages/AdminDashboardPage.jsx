@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { categories, operationStatuses } from "../data/menu";
+import {
+  categories,
+  operationStatuses,
+  publicationStatusLabels,
+  publicationStatuses
+} from "../data/menu";
 import { api, API_BASE_URL, IMAGE_UPLOAD_MAX_MB } from "../lib/api";
 import { clearSession, getUser, isLoggedIn } from "../lib/auth";
 import { getDebugPropertyDraft } from "../lib/debugPrefill";
@@ -10,6 +15,7 @@ const emptyProperty = {
   description: "",
   category: "PROPIEDADES",
   operationStatus: "EN_VENTA",
+  publicationStatus: "DISPONIBLE",
   price: 0,
   currency: "USD",
   totalM2: 0,
@@ -21,7 +27,6 @@ const emptyProperty = {
   neighborhood: "",
   city: "Buenos Aires",
   branch: "Capital Federal",
-  published: true,
   images: []
 };
 
@@ -66,6 +71,7 @@ export default function AdminDashboardPage() {
   const [form, setForm] = useState(emptyProperty);
   const [imageUrl, setImageUrl] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
   const [error, setError] = useState("");
   const [qrItem, setQrItem] = useState(null);
   const [showFormModal, setShowFormModal] = useState(false);
@@ -104,6 +110,7 @@ export default function AdminDashboardPage() {
     setSelectedId(null);
     setForm(emptyProperty);
     setError("");
+    setUploadError("");
     setShowFormModal(true);
   }
 
@@ -114,6 +121,7 @@ export default function AdminDashboardPage() {
       description: item.description,
       category: item.category,
       operationStatus: item.operationStatus,
+      publicationStatus: item.publicationStatus,
       price: Number(item.price),
       currency: item.currency,
       totalM2: item.totalM2,
@@ -125,10 +133,10 @@ export default function AdminDashboardPage() {
       neighborhood: item.neighborhood,
       city: item.city,
       branch: item.branch,
-      published: item.published,
       images: item.images || []
     });
     setError("");
+    setUploadError("");
     setShowFormModal(true);
   }
 
@@ -137,6 +145,7 @@ export default function AdminDashboardPage() {
     setSelectedId(null);
     setForm(emptyProperty);
     setError("");
+    setUploadError("");
     setDraggedImageIndex(null);
   }
 
@@ -209,6 +218,7 @@ export default function AdminDashboardPage() {
     }
 
     setError("");
+    setUploadError("");
     setUploading(true);
     try {
       const uploads = await Promise.allSettled(
@@ -241,14 +251,14 @@ export default function AdminDashboardPage() {
       const failedUploads = uploads.filter((upload) => upload.status === "rejected");
       if (failedUploads.length > 0) {
         const firstError = failedUploads[0].reason?.message || "No se pudieron subir algunas imagenes.";
-        setError(
+        setUploadError(
           failedUploads.length === files.length
             ? firstError
             : `${failedUploads.length} imagen(es) no se pudieron subir. ${firstError}`
         );
       }
     } catch (err) {
-      setError(err.message);
+      setUploadError(err.message || "No se pudo subir la imagen.");
     } finally {
       event.target.value = "";
       setUploading(false);
@@ -365,9 +375,9 @@ export default function AdminDashboardPage() {
                       <span className="badge badge-status">
                         {STATUS_LABELS[item.operationStatus] ?? item.operationStatus}
                       </span>
-                      {!item.published && (
-                        <span className="badge badge-unpublished">Oculta</span>
-                      )}
+                      <span className={`badge badge-publication badge-publication-${item.publicationStatus?.toLowerCase().replaceAll("_", "-")}`}>
+                        {publicationStatusLabels[item.publicationStatus] ?? item.publicationStatus}
+                      </span>
                     </div>
                     <p className="admin-card-location">
                       {[item.neighborhood, item.city].filter(Boolean).join(", ")}
@@ -470,7 +480,7 @@ export default function AdminDashboardPage() {
                   </select>
                 </label>
                 <label>
-                  Estado
+                  Operación
                   <select
                     value={form.operationStatus}
                     onChange={(event) =>
@@ -478,6 +488,21 @@ export default function AdminDashboardPage() {
                     }
                   >
                     {operationStatuses.map((item) => (
+                      <option key={item.value} value={item.value}>
+                        {item.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Publicación
+                  <select
+                    value={form.publicationStatus}
+                    onChange={(event) =>
+                      updateField("publicationStatus", event.target.value)
+                    }
+                  >
+                    {publicationStatuses.map((item) => (
                       <option key={item.value} value={item.value}>
                         {item.label}
                       </option>
@@ -598,15 +623,6 @@ export default function AdminDashboardPage() {
                 </label>
               </div>
 
-              <label className="toggle-field">
-                <input
-                  type="checkbox"
-                  checked={form.published}
-                  onChange={(event) => updateField("published", event.target.checked)}
-                />
-                Publicada
-              </label>
-
               <div className="images-box">
                 <h3>Fotos</h3>
                 <div className="inline-fields">
@@ -632,6 +648,7 @@ export default function AdminDashboardPage() {
                   Acepta PNG, JPG y WEBP de hasta {IMAGE_UPLOAD_MAX_MB} MB. La primera foto
                   se muestra como destacada.
                 </p>
+                {uploadError ? <p className="upload-error" role="alert">{uploadError}</p> : null}
                 <div className="image-preview-grid">
                   {form.images.map((image, index) => (
                     <div

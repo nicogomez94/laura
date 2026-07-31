@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api, API_BASE_URL } from "../lib/api";
+import { publicationStatusLabels } from "../data/menu";
 
 function formatCurrency(value, currency) {
   return new Intl.NumberFormat("es-AR", {
@@ -143,6 +144,10 @@ export default function PropertyDetailPage() {
             ) : (
               <div className="detail-main-image img-placeholder">Sin imagen</div>
             )}
+
+            <span className={`publication-mark publication-mark-${property.publicationStatus.toLowerCase().replaceAll("_", "-")}`}>
+              {publicationStatusLabels[property.publicationStatus]}
+            </span>
 
             {hasGalleryControls ? (
               <>

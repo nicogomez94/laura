@@ -994,6 +994,10 @@ a {
   border: 1px solid var(--line);
 }
 
+.property-card-image {
+  position: relative;
+}
+
 .property-card img,
 .img-placeholder {
   width: 100%;
@@ -1010,6 +1014,55 @@ a {
 
 .property-card-content h3 {
   margin-bottom: 6px;
+}
+
+.publication-mark {
+  display: inline-flex;
+  align-items: center;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  padding: 4px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 999px;
+  background: rgba(12, 18, 28, 0.76);
+  color: #eef2f8;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+}
+
+.publication-mark-disponible,
+.badge-publication-disponible {
+  color: #b8d9c2;
+}
+
+.publication-mark-vendido,
+.badge-publication-vendido {
+  color: #ebc098;
+}
+
+.publication-mark-no-disponible,
+.badge-publication-no-disponible {
+  color: #d8c0c7;
+}
+
+.publication-mark-alquilado,
+.badge-publication-alquilado {
+  color: #a9d0e7;
+}
+
+.publication-mark-reservado,
+.badge-publication-reservado {
+  color: #ddc5f1;
+}
+
+.badge-publication-borrador {
+  color: #c5aab2;
 }
 
 .price {
@@ -1466,6 +1519,11 @@ a {
   border: 1px solid rgba(255, 90, 90, 0.25);
 }
 
+.badge-publication {
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+}
+
 .admin-card-location {
   font-size: 0.8rem;
   color: var(--text-dim);
@@ -1727,6 +1785,13 @@ select {
   margin-top: 8px;
   color: #aeb8cc;
   font-size: 0.9rem;
+}
+
+.upload-error {
+  margin-top: 8px;
+  color: #ff9a9a;
+  font-size: 0.88rem;
+  line-height: 1.4;
 }
 
 .image-preview-grid {

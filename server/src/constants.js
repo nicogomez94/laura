@@ -10,3 +10,12 @@ export const OPERATION_STATUSES = [
 ];
 
 export const CURRENCIES = ["USD", "ARS"];
+
+export const PUBLICATION_STATUSES = [
+  "DISPONIBLE",
+  "VENDIDO",
+  "NO_DISPONIBLE",
+  "ALQUILADO",
+  "RESERVADO",
+  "BORRADOR"
+];

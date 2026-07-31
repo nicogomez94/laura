@@ -102,3 +102,16 @@ export const operationStatuses = [
   { value: "EN_POZO", label: "En pozo" },
   { value: "LISTO_PARA_VIVIR", label: "Listo para vivir" }
 ];
+
+export const publicationStatuses = [
+  { value: "DISPONIBLE", label: "Disponible" },
+  { value: "VENDIDO", label: "Vendido" },
+  { value: "NO_DISPONIBLE", label: "No disponible" },
+  { value: "ALQUILADO", label: "Alquilado" },
+  { value: "RESERVADO", label: "Reservado" },
+  { value: "BORRADOR", label: "Borrador" }
+];
+
+export const publicationStatusLabels = Object.fromEntries(
+  publicationStatuses.map(({ value, label }) => [value, label])
+);
