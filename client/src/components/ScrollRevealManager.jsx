@@ -3,6 +3,11 @@ import { useLocation } from "react-router-dom";
 
 const TARGET_SELECTOR = ".hero, section, footer";
 
+function isInInitialViewport(target) {
+  const bounds = target.getBoundingClientRect();
+  return bounds.top < window.innerHeight && bounds.bottom > 0;
+}
+
 export default function ScrollRevealManager() {
   const location = useLocation();
 
@@ -33,11 +38,19 @@ export default function ScrollRevealManager() {
       }
     );
 
-      targets.forEach((target, index) => {
-        target.classList.add("reveal-on-scroll");
-        target.style.setProperty("--reveal-delay", `${Math.min(index * 40, 220)}ms`);
-        observer.observe(target);
-      });
+    targets.forEach((target, index) => {
+      target.classList.add("reveal-on-scroll");
+      target.style.setProperty("--reveal-delay", `${Math.min(index * 40, 220)}ms`);
+
+      // The home .hero wraps the full page, so on mobile its visible ratio can
+      // never reach the observer threshold. Never hide content already on screen.
+      if (isInInitialViewport(target)) {
+        target.classList.add("is-visible");
+        return;
+      }
+
+      observer.observe(target);
+    });
 
     return () => {
       observer.disconnect();
