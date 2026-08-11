@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="container footer-grid">
         <div>
-          <p className="footer-brand">LGPROPIEDADES</p>
+          <p className="footer-brand">Laura Gutierrez Propiedades</p>
           <p className="footer-text">
             Servicios inmobiliarios para compra, venta, alquiler y tasaciones en
             CABA.
