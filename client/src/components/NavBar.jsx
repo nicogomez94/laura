@@ -90,7 +90,7 @@ function NavContent({ mobileOpen, setMobileOpen }) {
       <nav className="navbar container">
         <Link to="/" className="brand">
           <img
-            src="/laura_gutierrez_propiedades.svg"
+            src="/logo-menu.png"
             alt="Laura Gutierrez Propiedades"
             className="brand-logo"
           />
