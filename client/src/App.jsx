@@ -1,4 +1,5 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { useEffect, useRef } from "react";
 import NavBar, { HeroNavBar } from "./components/NavBar";
 import ScrollRevealManager from "./components/ScrollRevealManager";
 import HomePage from "./pages/HomePage";
@@ -14,6 +15,21 @@ import ServicesPage from "./pages/ServicesPage";
 
 const WHATSAPP_URL =
   "https://wa.me/5491133600537?text=Hola%20Laura,%20quisiera%20hacer%20una%20consulta.";
+
+function MetaPixelRouteTracker() {
+  const { pathname, search } = useLocation();
+  const previousLocation = useRef(`${pathname}${search}`);
+
+  useEffect(() => {
+    const currentLocation = `${pathname}${search}`;
+    if (currentLocation !== previousLocation.current) {
+      window.fbq?.("track", "PageView");
+      previousLocation.current = currentLocation;
+    }
+  }, [pathname, search]);
+
+  return null;
+}
 
 function AppRoutes() {
   return (
@@ -56,6 +72,7 @@ function WhatsAppFloatingButton() {
 function App() {
   return (
     <BrowserRouter>
+      <MetaPixelRouteTracker />
       <ScrollRevealManager />
       <AppRoutes />
       <WhatsAppFloatingButton />
