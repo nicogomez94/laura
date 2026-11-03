@@ -193,6 +193,9 @@ export default function PropertyDetailPage() {
         <aside className="detail-summary">
           <h1>{property.title}</h1>
           <p className="price">{formatCurrency(property.price, property.currency)}</p>
+          {Number(property.expenses) > 0 ? (
+            <p>Expensas: {formatCurrency(property.expenses, "ARS")}</p>
+          ) : null}
           <p className="detail-location">
             {property.address}, {property.neighborhood}, {property.city}
           </p>

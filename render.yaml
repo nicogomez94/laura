@@ -28,6 +28,14 @@ services:
         value: https://lauragutierrezpropiedades.com.ar
       - key: RUN_SEED_ON_DEPLOY
         value: "true"
+      - key: TOKKO_API_KEY
+        sync: false
+      - key: TOKKO_SYNC_ENABLED
+        value: "true"
+      - key: TOKKO_SYNC_LIMIT
+        value: "3"
+      - key: TOKKO_SYNC_INTERVAL_MINUTES
+        value: "15"
 
   - type: web
     name: laura-client

@@ -45,6 +45,10 @@ export function validatePropertyPayload(payload) {
     return "Precio invalido.";
   }
 
+  if (Number.isNaN(Number(payload.expenses)) || Number(payload.expenses) < 0) {
+    return "Expensas invalidas.";
+  }
+
   const integerFields = [
     "totalM2",
     "coveredM2",

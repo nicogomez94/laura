@@ -81,6 +81,9 @@ export default function ListingsPage() {
                 <p className="price">
                   {formatCurrency(property.price, property.currency)}
                 </p>
+                {Number(property.expenses) > 0 ? (
+                  <p>Expensas: {formatCurrency(property.expenses, "ARS")}</p>
+                ) : null}
                 <p className="specs">
                   {property.coveredM2}m2 cubiertos · {property.rooms} amb ·{" "}
                   {property.bathrooms} banos

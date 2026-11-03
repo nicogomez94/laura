@@ -9,6 +9,7 @@ import authRouter from "./routes/auth.js";
 import propertiesRouter from "./routes/properties.js";
 import adminRouter from "./routes/admin.js";
 import { ensureDebugData } from "./debug/ensureDebugData.js";
+import { startTokkoSync } from "./services/tokko.js";
 
 dotenv.config();
 
@@ -85,6 +86,7 @@ app.use((_req, res) => {
 
 app.listen(port, () => {
   console.log(`API escuchando en http://localhost:${port}`);
+  startTokkoSync();
 });
 
 ensureDebugData().catch((error) => {

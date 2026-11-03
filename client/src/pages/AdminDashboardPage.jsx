@@ -17,6 +17,7 @@ const emptyProperty = {
   operationStatus: "EN_VENTA",
   publicationStatus: "DISPONIBLE",
   price: 0,
+  expenses: 0,
   currency: "USD",
   totalM2: 0,
   coveredM2: 0,
@@ -34,6 +35,7 @@ function mapFormData(form) {
   return {
     ...form,
     price: Number(form.price),
+    expenses: Number(form.expenses),
     totalM2: Number(form.totalM2),
     coveredM2: Number(form.coveredM2),
     rooms: Number(form.rooms),
@@ -123,6 +125,7 @@ export default function AdminDashboardPage() {
       operationStatus: item.operationStatus,
       publicationStatus: item.publicationStatus,
       price: Number(item.price),
+      expenses: Number(item.expenses || 0),
       currency: item.currency,
       totalM2: item.totalM2,
       coveredM2: item.coveredM2,
@@ -530,6 +533,15 @@ export default function AdminDashboardPage() {
                     <option value="USD">USD</option>
                     <option value="ARS">ARS</option>
                   </select>
+                </label>
+                <label>
+                  Expensas
+                  <input
+                    type="number"
+                    value={form.expenses}
+                    onChange={(event) => updateField("expenses", event.target.value)}
+                    min="0"
+                  />
                 </label>
               </div>
               <div className="inline-fields">

@@ -16,6 +16,7 @@ router.get("/", async (req, res) => {
   const { category, operationStatus } = req.query;
 
   const where = {
+    published: true,
     publicationStatus: {
       not: "BORRADOR"
     }
@@ -48,7 +49,7 @@ router.get("/:slug", async (req, res) => {
     include: propertyInclude
   });
 
-  if (!property || property.publicationStatus === "BORRADOR") {
+  if (!property || !property.published || property.publicationStatus === "BORRADOR") {
     return res.status(404).json({ message: "Propiedad no encontrada." });
   }
 

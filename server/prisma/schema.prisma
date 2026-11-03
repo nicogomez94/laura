@@ -35,6 +35,11 @@ enum PublicationStatus {
   BORRADOR
 }
 
+enum PropertySource {
+  MANUAL
+  TOKKO
+}
+
 model AdminUser {
   id           Int      @id @default(autoincrement())
   username     String   @unique
@@ -52,6 +57,7 @@ model Property {
   category          Category
   operationStatus   OperationStatus
   price             Decimal           @db.Decimal(12, 2)
+  expenses          Decimal           @default(0) @db.Decimal(12, 2)
   currency          Currency          @default(USD)
   totalM2           Int
   coveredM2         Int
@@ -62,6 +68,9 @@ model Property {
   neighborhood      String
   city              String
   branch            String            @default("Capital Federal")
+  source            PropertySource    @default(MANUAL)
+  tokkoId           Int?              @unique
+  tokkoLastSyncedAt DateTime?
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
   images            PropertyImage[]

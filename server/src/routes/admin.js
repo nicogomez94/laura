@@ -49,6 +49,7 @@ function parsePropertyBody(req) {
     operationStatus: body.operationStatus,
     publicationStatus: body.publicationStatus,
     price: Number(body.price),
+    expenses: Number(body.expenses || 0),
     currency: body.currency,
     totalM2: Number(body.totalM2),
     coveredM2: Number(body.coveredM2),
