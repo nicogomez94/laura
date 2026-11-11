@@ -6,6 +6,7 @@ import multer from "multer";
 import { prisma } from "../lib/prisma.js";
 import { requireAuth } from "../middleware/auth.js";
 import { validatePropertyPayload } from "../validators.js";
+import { normalizeRichText } from "../utils/richText.js";
 import { randomSuffix, slugify } from "../utils/slug.js";
 
 const router = Router();
@@ -44,7 +45,7 @@ function parsePropertyBody(req) {
 
   return {
     title: String(body.title || "").trim(),
-    description: String(body.description || "").trim(),
+    description: normalizeRichText(body.description),
     category: body.category,
     operationStatus: body.operationStatus,
     publicationStatus: body.publicationStatus,

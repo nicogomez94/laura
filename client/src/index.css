@@ -1334,9 +1334,31 @@ a {
   margin-bottom: 10px;
 }
 
-.detail-description p {
+.detail-description-content {
   color: var(--text-dim);
   line-height: 1.6;
+}
+
+.detail-description-content > * + * {
+  margin-top: 0.85rem;
+}
+
+.detail-description-content ul,
+.detail-description-content ol {
+  padding-left: 1.5rem;
+}
+
+.detail-description-content h2,
+.detail-description-content h3,
+.detail-description-content h4 {
+  color: var(--text);
+  font-family: "Sora", sans-serif;
+  line-height: 1.3;
+}
+
+.detail-description-content blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
 }
 
 .admin-login {
@@ -1719,6 +1741,73 @@ a {
 .admin-form {
   display: grid;
   gap: 12px;
+}
+
+.admin-form-field {
+  display: grid;
+  gap: 6px;
+}
+
+.rich-text-editor {
+  overflow: hidden;
+  border: 1px solid #3a465f;
+  border-radius: 8px;
+  background: #111827;
+}
+
+.rich-text-editor:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgb(218 165 32 / 18%);
+}
+
+.rich-text-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 8px;
+  border-bottom: 1px solid #3a465f;
+  background: #182133;
+}
+
+.rich-text-toolbar button {
+  width: auto;
+  min-height: 32px;
+  padding: 5px 9px;
+  border: 1px solid #46536c;
+  border-radius: 5px;
+  background: #222d42;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.rich-text-toolbar button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.rich-text-content {
+  min-height: 180px;
+  max-height: 420px;
+  overflow-y: auto;
+  padding: 12px;
+  color: var(--text);
+  line-height: 1.55;
+  outline: none;
+}
+
+.rich-text-content:empty::before {
+  color: #78849b;
+  content: attr(data-placeholder);
+  pointer-events: none;
+}
+
+.rich-text-content > * + * {
+  margin-top: 0.65rem;
+}
+
+.rich-text-content ul,
+.rich-text-content ol {
+  padding-left: 1.5rem;
 }
 
 label {

@@ -1,4 +1,5 @@
 import { prisma } from "../lib/prisma.js";
+import { normalizeRichText } from "../utils/richText.js";
 
 const TOKKO_PROPERTIES_URL = "https://www.tokkobroker.com/api/v1/property/";
 const DEFAULT_PAGE_SIZE = 20;
@@ -65,7 +66,10 @@ export function mapTokkoProperty(property, syncedAt = new Date()) {
     source: "TOKKO",
     slug: `tokko-${property.id}`,
     title,
-    description: normalizeText(property.description, title),
+    description: normalizeRichText(
+      property.rich_description || property.description,
+      title
+    ),
     published: true,
     publicationStatus: "DISPONIBLE",
     category: property.development ? "EMPRENDIMIENTOS" : "PROPIEDADES",

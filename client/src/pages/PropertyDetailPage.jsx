@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api, API_BASE_URL } from "../lib/api";
 import { publicationStatusLabels } from "../data/menu";
+import { sanitizeRichText } from "../lib/richText";
 
 function formatCurrency(value, currency) {
   return new Intl.NumberFormat("es-AR", {
@@ -238,8 +239,11 @@ export default function PropertyDetailPage() {
       </section>
 
       <section className="detail-description">
-        <h2>Descripcion</h2>
-        <p>{property.description}</p>
+        <h2>Descripción</h2>
+        <div
+          className="detail-description-content"
+          dangerouslySetInnerHTML={{ __html: sanitizeRichText(property.description) }}
+        />
       </section>
     </main>
   );

@@ -4,6 +4,7 @@ import {
   OPERATION_STATUSES,
   PUBLICATION_STATUSES
 } from "./constants.js";
+import { richTextIsEmpty } from "./utils/richText.js";
 
 function isPositiveInteger(value) {
   return Number.isInteger(value) && value >= 0;
@@ -12,7 +13,6 @@ function isPositiveInteger(value) {
 export function validatePropertyPayload(payload) {
   const requiredStrings = [
     "title",
-    "description",
     "address",
     "neighborhood",
     "city",
@@ -23,6 +23,10 @@ export function validatePropertyPayload(payload) {
     if (!payload[field] || typeof payload[field] !== "string") {
       return `Campo invalido: ${field}`;
     }
+  }
+
+  if (typeof payload.description !== "string" || richTextIsEmpty(payload.description)) {
+    return "Campo invalido: description";
   }
 
   if (!CATEGORIES.includes(payload.category)) {

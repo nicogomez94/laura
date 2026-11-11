@@ -9,6 +9,7 @@ import {
 import { api, API_BASE_URL, IMAGE_UPLOAD_MAX_MB } from "../lib/api";
 import { clearSession, getUser, isLoggedIn } from "../lib/auth";
 import { getDebugPropertyDraft } from "../lib/debugPrefill";
+import RichTextEditor from "../components/RichTextEditor";
 
 const emptyProperty = {
   title: "",
@@ -459,15 +460,13 @@ export default function AdminDashboardPage() {
                   required
                 />
               </label>
-              <label>
-                Descripcion
-                <textarea
+              <div className="admin-form-field">
+                <span>Descripción</span>
+                <RichTextEditor
                   value={form.description}
-                  onChange={(event) => updateField("description", event.target.value)}
-                  rows={4}
-                  required
+                  onChange={(value) => updateField("description", value)}
                 />
-              </label>
+              </div>
               <div className="inline-fields">
                 <label>
                   Categoria
