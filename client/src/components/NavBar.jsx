@@ -72,7 +72,7 @@ function NavContent({ mobileOpen, setMobileOpen }) {
             <i className="fa-brands fa-facebook-f" aria-hidden="true" />
           </a>
           <a
-            href="https://www.instagram.com/lgcpropiedades/"
+            href="https://www.instagram.com/lauragutierrezpropiedades/"
             target="_blank"
             rel="noreferrer"
             aria-label="Instagram"

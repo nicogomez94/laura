@@ -38,7 +38,7 @@ export default function Footer() {
               <span>Facebook</span>
             </a>
             <a
-              href="https://www.instagram.com/lgcpropiedades/"
+              href="https://www.instagram.com/lauragutierrezpropiedades/"
               target="_blank"
               rel="noreferrer"
               aria-label="Instagram"
